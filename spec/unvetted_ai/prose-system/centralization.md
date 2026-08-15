@@ -2,11 +2,11 @@
 
 <!-- [>] 🤖🤖 -->
 
-One semver-tagged `prose` repo is the canonical home of all workspace prose:
-conventions, purpose docs, README sources, specs, shared doc fragments,
-canonical doc templates. Downstream repos own assembly: their `che.yml`
-renderTemplates consume prose artifacts at a pinned version and render their
-own docs. Prose provides artifacts, never renders into other repos.
+One semver-tagged `prose` repo holds all workspace prose: conventions, purpose
+docs, README sources, specs, shared fragments, canonical doc templates.
+Downstream repos own assembly: their `che.yml` renderTemplates consume prose
+artifacts at a pinned version. Prose ships artifacts, never renders into other
+repos.
 
 Scenario: an author edits any workspace prose in one repo
   Status: implemented
@@ -15,7 +15,7 @@ Scenario: an author edits any workspace prose in one repo
   Then the edit lands in the prose repo only
   And no downstream repo carries its own copy of that prose
 
-Scenario: a downstream repo keeps full control of its own doc assembly
+Scenario: a downstream repo keeps control of its own doc assembly
   Status: implemented
   Given a downstream repo's `che.yml` renderTemplates pinned to a prose version
   When the repo renders its docs
@@ -28,7 +28,7 @@ Scenario: per-repo prose stays findable by repo path
   When anyone looks for a repo's purpose doc, README source, or specs
   Then they find them under that repo's path in the prose repo
 
-Scenario: prose pieces join into downstream-ready artifacts at the source
+Scenario: prose joins pieces into downstream-ready artifacts at the source
   Status: todo
   Given several prose pieces a downstream consumes as one document
   When the combined artifact is produced

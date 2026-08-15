@@ -2,10 +2,9 @@
 
 <!-- [>] 🤖🤖 -->
 
-A local watcher keeps non-checked-out generated files fresh in local
-worktrees: on a new prose tag it re-renders, per local repo checkout, only
-outputs that are not tracked by git. Tracked files change exclusively through
-the regen MR flow.
+A local watcher keeps generated files fresh in local worktrees: on a new prose
+tag it re-renders, per checkout, only outputs git does not track. Tracked files
+change through the regen MR flow alone.
 
 Scenario: a developer's local gitignored outputs follow prose releases
   Status: implemented

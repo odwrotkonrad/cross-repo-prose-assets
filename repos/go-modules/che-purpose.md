@@ -6,7 +6,7 @@ Spec-driven dotfile configuration loader: detects OS+arch+virt, resolves a profi
 
 ## Why It Exists
 
-Dotfile loading as shell scripts is fragile, imperative, host-specific. One declarative spec drives every host. The render engine lives here, in its only consumer: che and repo docs generation share one implementation.
+Shell-script dotfile loading is fragile, imperative, host-specific. One declarative spec drives every host. The render engine lives here, in its only consumer: che and repo docs generation share one implementation.
 
 ## Goals
 

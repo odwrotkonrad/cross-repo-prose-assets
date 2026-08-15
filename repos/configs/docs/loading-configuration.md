@@ -1,7 +1,7 @@
 ## Loading Configs
 
 ```sh
-#[what] load configuration files as links in the system root, creating directories when necessary
+#[what] link config files into the system root, creating dirs as needed
 make host-load-configs
 
 #[what] run profile scripts: install tools, services, dependencies
