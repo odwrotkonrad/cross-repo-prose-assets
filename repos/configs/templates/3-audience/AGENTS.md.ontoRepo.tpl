@@ -6,6 +6,8 @@ Dotfiles extended into root OS space, loaded onto the host from one root/ tree b
 
 @assets/data/conventions.md
 
+This repo's behavior specs live in the prose repo: `prose/repos/configs/spec/` (Gherkin markdown, per-scenario statuses, vetting dirs apply, edit specs before implementation).
+
 @assets/docs-agents/file-naming.md
 
 @assets/data/tools-inventory-index.yml

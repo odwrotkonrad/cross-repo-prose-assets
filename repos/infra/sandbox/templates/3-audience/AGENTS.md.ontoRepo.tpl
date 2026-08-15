@@ -6,6 +6,8 @@ Local claude session sandbox: kind cluster plus per-session pods running the con
 
 @assets/data/conventions.md
 
+This repo's behavior specs live in the prose repo: `prose/repos/infra/sandbox/spec/` (Gherkin markdown, per-scenario statuses, vetting dirs apply, edit specs before implementation).
+
 @assets/data/makefile.agents.md
 
 ## Directory Tree

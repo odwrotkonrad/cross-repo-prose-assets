@@ -4,6 +4,8 @@
 
 @assets/data/conventions.md
 
+This repo's behavior specs live in the prose repo: `prose/repos/go-modules/spec/` (Gherkin markdown, per-scenario statuses, vetting dirs apply, edit specs before implementation).
+
 # Modules
 
 Each module has its own `go.mod` (`gitlab.com/konradodwrot/go-modules/<module>`) and release stream: dir-prefixed tags `<module>/vX.Y.Z`, bumped by CI on default-branch pushes touching the module dir. Root `go.work` ties the modules together for local dev.

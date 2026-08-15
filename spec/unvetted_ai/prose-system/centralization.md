@@ -9,7 +9,7 @@ renderTemplates consume prose artifacts at a pinned version and render their
 own docs. Prose provides artifacts, never renders into other repos.
 
 Scenario: an author edits any workspace prose in one repo
-  Status: todo
+  Status: implemented
   Given prose centralized under `conventions/`, `repos/<repo-path>/`, `shared/`, `templates/`
   When any convention, purpose doc, README source, spec, or shared fragment needs a change
   Then the edit lands in the prose repo only
