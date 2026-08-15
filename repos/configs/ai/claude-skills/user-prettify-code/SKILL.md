@@ -1,7 +1,7 @@
 ---
 name: user-prettify-code
 description: Refactor code for quality without changing behavior, reduce complexity, remove antipatterns, idiomatic target-language code, modern syntax, commonize repeated code, remove dead code. Use when the user wants code cleaned up, simplified, modernized, deduplicated, or de-antipatterned. Keywords: prettify, refactor, clean up, simplify, dedupe, modernize, idiomatic, antipattern, dead code, /user-prettify-code.
-argument-hint: "[uncommited-changes|diff-from-main|<path>] [lang]"
+argument-hint: "[all-repo|uncommited-changes|diff-from-main|<path>] [lang]"
 arguments: [scope, lang]
 allowed-tools: "Bash(${CLAUDE_SKILL_DIR}/scripts/*)"
 ---

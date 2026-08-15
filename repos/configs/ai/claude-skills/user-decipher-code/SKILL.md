@@ -1,7 +1,7 @@
 ---
 name: user-decipher-code
 description: Make code self-descriptive, understand every symbol and comment, then fold clarifying comments into names and structure, rename, rearrange, cut comments, until reading the code is a pleasure. Use when the user wants code deciphered, made self-explanatory, comments reduced, or symbols renamed for clarity. Keywords: decipher, self-descriptive, self-documenting, rename symbols, reduce comments, clarify code, readable, /user-decipher-code.
-argument-hint: "[uncommited-changes|diff-from-main|<path>] [lang]"
+argument-hint: "[all-repo|uncommited-changes|diff-from-main|<path>] [lang]"
 arguments: [scope, lang]
 allowed-tools: "Bash(${CLAUDE_SKILL_DIR}/scripts/*)"
 ---
