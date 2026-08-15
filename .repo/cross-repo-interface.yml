@@ -1,0 +1,10 @@
+##[>] 🤖🤖
+upstream:
+  - infra/oci-images/ci-linux
+downstream:
+  - {name: conventions-doc, type: ai-prose}
+  - {name: repo-prose, type: ai-prose}
+  - {name: shared-prose, type: ai-prose}
+  - {name: doc-templates, type: ai-prose}
+  - {name: license, type: ai-prose}
+##[<] 🤖🤖

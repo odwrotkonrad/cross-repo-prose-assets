@@ -1,0 +1,1 @@
+Dotfiles extended into root OS space. Loaded onto the host from one `root/` tree: symlinked by default, copied where marked `.ontoHost.cp`, and rendered onto host from `*.ontoHost.tpl` templates. `*.ontoRepo.tpl` templates render onto the repo (generated docs, vm vars).
