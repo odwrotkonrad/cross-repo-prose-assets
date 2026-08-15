@@ -13,7 +13,7 @@ Scenario: a merged change becomes consumable without any manual release step
   Given a commit lands on main
   When the tag job runs
   Then it mints and pushes the next `vX.Y.Z` tag
-  And the first tag ever minted is `v1.0.0`
+  And the first tag ever minted is `v0.0.1`
 
 Scenario: a removed or renamed prose file never sneaks into an auto-merged update
   Status: todo

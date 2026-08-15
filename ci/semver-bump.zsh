@@ -6,7 +6,7 @@ content_dirs=(conventions repos shared templates)
 
 last=$(git describe --tags --abbrev=0 --match 'v[0-9]*' 2>/dev/null || true)
 if [[ -z $last ]] {
-  print v1.0.0
+  print v0.0.1
   exit 0
 }
 
