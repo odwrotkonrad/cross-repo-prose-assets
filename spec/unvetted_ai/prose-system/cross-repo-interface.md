@@ -3,10 +3,11 @@
 <!-- [>] 🤖🤖 -->
 
 Each repo declares its own cross-repo surface in
-`.repo/cross-repo-interface.yml`: `downstream:` lists the artifacts it
-produces (`name` + `type`), `upstream:` lists the `<repo>/<artifact>` vertices
-it consumes. Control aggregates all declarations into one generated
-dependency graph; no central file is hand-maintained.
+`.repo/cross-repo-interface.yml`: `upstream:` lists the `<repo>/<artifact>`
+vertices it consumes repo-level, `edges:` maps an upstream vertex to the list
+of this repo's artifacts it lands in, `downstream:` lists the artifacts it
+produces (`name` + `type`). Control aggregates all declarations into one
+generated dependency graph; no central file is hand-maintained.
 
 Scenario: a repo owner declares that repo's dependencies where they live
   Status: implemented
