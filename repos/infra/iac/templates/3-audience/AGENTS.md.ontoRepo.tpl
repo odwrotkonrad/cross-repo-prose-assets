@@ -1,6 +1,6 @@
-# infra
+# iac
 
-The `restricted` group and the sandbox identity it holds, as Terraform.
+The `konradodwrot` group tree and the identities it holds, as Terraform.
 
 @assets/docs-agents/purpose.md
 

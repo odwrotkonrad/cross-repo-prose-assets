@@ -2,15 +2,13 @@
 
 ## What It Is
 
-Canonical repo conventions: purpose docs, commenting notation, Makefile style, che template docs generation. Markdown docs for AI agents, runnable examples, che.yml wiring, gomplate templates.
+Retired canonical home of repo conventions. The conventions live in the prose repo now (`prose/conventions/`), authored, versioned, and consumed from there at pinned versions.
 
 ## Why It Exists
 
-All user projects share these conventions. This repo is their one home: authored, versioned, referenced here.
+Held the shared conventions before prose centralized all workspace prose. Stays only until every consumer is verified against prose, then it is archived or deleted.
 
 ## Goals
 
-- Single source of truth for cross-repo conventions.
-- Consistent structure across all repos: same purpose doc, same comment notation, same Makefile shape.
-- Agents and humans onboard onto any repo from the same short docs.
-
+- Zero remaining consumers: every reference points at prose.
+- Retire without loss: content lives in prose, history stays here until removal.

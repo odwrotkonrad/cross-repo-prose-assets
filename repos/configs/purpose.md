@@ -2,7 +2,7 @@
 
 ## What It Is
 
-Git-tracked dotfiles extended into root OS space: every option explicitly configured, scripts, observability stack. Loaded onto the host from one `root/` tree by che: symlinked by default, `.ontoHost.cp` copied, `*.ontoHost.tpl` rendered onto the host. `*.ontoRepo.tpl` renders repo docs and vm vars onto the repo.
+Git-tracked dotfiles extended into root OS space: every option explicitly configured, scripts, observability stack. Loaded onto the host from one `root/` tree by che: symlinked by default, `.ontoHost.cp` copied, `*.ontoHost.tpl` rendered onto the host. Repo docs, the license, and the AI prose payloads (agent rules, skills, output styles, snippets) render from the prose repo at a pinned version; only vm vars and repo-specific templates render from local sources.
 
 ## Why It Exists
 
