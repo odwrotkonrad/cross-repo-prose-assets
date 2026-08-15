@@ -2,11 +2,10 @@
 
 <!-- [>] 🤖🤖 -->
 
-Every merge to main mints one semver tag `vX.Y.Z`. The bump is inferred from
-the last tag..HEAD diff over the prose content dirs (`conventions/`, `repos/`,
-`shared/`, `templates/`): deletes and renames major, additions minor,
-everything else patch. A `semver: major|minor|patch` commit token overrides
-inference.
+Every merge to main mints one semver tag `vX.Y.Z`, bumping the patch. Prose
+grows by adding files, so an add is not a release event: only a
+`semver: major|minor|patch` commit token lifts a release above patch. The last
+tag is read from the remote, never from the local clone.
 
 Scenario: a merged change becomes consumable without any manual release step
   Status: implemented
@@ -15,29 +14,24 @@ Scenario: a merged change becomes consumable without any manual release step
   Then it mints and pushes the next `vX.Y.Z` tag
   And the first tag ever minted is `v0.0.1`
 
-Scenario: a removed or renamed prose file never sneaks into an auto-merged update
+Scenario: a routine prose change ships as a patch
   Status: implemented
-  Given the tag..HEAD diff deletes or renames a file under a prose content dir
-  When the bump is inferred
-  Then the bump is major
-
-Scenario: new prose arrives downstream as a feature, not a break
-  Status: implemented
-  Given the tag..HEAD diff only adds files under prose content dirs
-  When the bump is inferred
-  Then the bump is minor
-
-Scenario: an in-place edit ships as a patch
-  Status: implemented
-  Given the tag..HEAD diff only modifies existing files
-  When the bump is inferred
+  Given a tag..HEAD diff that adds, edits or deletes prose files
+  When the bump is computed without a `semver:` token
   Then the bump is patch
 
-Scenario: an author overrides inference when they know better
+Scenario: an author lifts a release above patch when the change warrants it
   Status: implemented
   Given a commit in tag..HEAD carries a `semver: major|minor|patch` token in its message
   When the bump is computed
-  Then the token wins over diff inference
+  Then the token decides the bump
   And with several tokens the largest bump wins
+
+Scenario: a stale local tag never decides the release
+  Status: implemented
+  Given a clone whose local tags differ from the remote
+  When the bump is computed
+  Then the last tag comes from the remote
+  And the minted tag follows the remote's latest, not the clone's
 
 <!-- [<] 🤖🤖 -->
