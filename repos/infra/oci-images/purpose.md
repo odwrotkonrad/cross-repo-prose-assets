@@ -2,7 +2,7 @@
 
 ## What It Is
 
-Two CI base images for the `konradodwrot` repos, each one multi-arch buildx
+Two CI base images for the `konradodwrot` repos, each a multi-arch buildx
 manifest (amd64 native, arm64 qemu-emulated) in this project's container
 registry. `ci-linux`: `debian:bookworm-slim` plus the shared CI toolchain (go,
 che, render-tpl, lefthook, yq, zsh, clang, make, git, zig, goreleaser,
@@ -14,7 +14,7 @@ here, then chains to the `infra/sandbox` image, which owns its own bake.
 
 Every repo's CI ran the same bootstrap: pull a golang base, `apt-get`
 clang/make/zsh, `go install che@latest` and `lefthook@latest`. Compiling che
-(1Password CGO SDK, tree-sitter) cost ~4–5 min per pipeline. Baking the
+(1Password CGO SDK, tree-sitter) cost ~4-5 min per pipeline. Baking the
 toolchain once turns that into a cached image pull.
 
 ## Goals

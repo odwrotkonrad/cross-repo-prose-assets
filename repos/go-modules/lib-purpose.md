@@ -2,10 +2,9 @@
 
 ## What It Is
 
-Shared library module for the sibling CLI modules: `yamlcfg` (system + user
-YAML config loading, deep-merge, XDG fallback, `CodedError` exit codes),
-`climain` (`-h/--help`, `-v/--version` dispatch, coded-exit epilogue). No
-binaries.
+Shared library for the sibling CLI modules: `yamlcfg` (system + user YAML
+loading, deep-merge, XDG fallback, `CodedError` exit codes), `climain`
+(`-h/--help`, `-v/--version` dispatch, coded-exit epilogue). No binaries.
 
 ## Why It Exists
 

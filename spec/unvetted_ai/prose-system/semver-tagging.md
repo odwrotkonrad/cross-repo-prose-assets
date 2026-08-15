@@ -3,10 +3,10 @@
 <!-- [>] 🤖🤖 -->
 
 Every merge to main mints one semver tag `vX.Y.Z`. The bump is inferred from
-the diff between the last tag and HEAD over the prose content dirs
-(`conventions/`, `repos/`, `shared/`, `templates/`): deletes and renames are
-breaking (major), additions are features (minor), everything else is a patch.
-A commit message token `semver: major|minor|patch` overrides inference.
+the last tag..HEAD diff over the prose content dirs (`conventions/`, `repos/`,
+`shared/`, `templates/`): deletes and renames major, additions minor,
+everything else patch. A `semver: major|minor|patch` commit token overrides
+inference.
 
 Scenario: a merged change becomes consumable without any manual release step
   Status: implemented

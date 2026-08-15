@@ -2,7 +2,7 @@
 
 ## What It Is
 
-Terraform for the `konradodwrot` GitLab group: the group tree, every project, branch protection, GitHub mirroring, and the machine identities automation runs on. The identities: the sandbox identity (Developer group token, SSH access and signing keys, a least-privileged GCP service account), the control identity (Maintainer group token for regen MRs, a masked CI variable on the control project only), the prose tag-minting project token, and release signing. Sensitive values flow through GCP Secrets Manager and 1Password; state sits in its own GCS bucket.
+Terraform for the `konradodwrot` GitLab group: the group tree, every project, branch protection, GitHub mirroring, and the machine identities automation runs on. The identities: sandbox (Developer group token, SSH access and signing keys, a least-privileged GCP service account), control (Maintainer group token for regen MRs, a masked CI variable on the control project only), the prose tag-minting project token, the homebrew-tap publisher token, and release signing. Sensitive values flow through GCP Secrets Manager and 1Password. State sits in its own GCS bucket.
 
 ## Why It Exists
 

@@ -5,9 +5,9 @@
 A fresh prose tag triggers the `control` pipeline. Control resolves affected
 downstreams from the dependency graph, regenerates each one via its own
 `make render-templates`, and opens a bot MR bumping the repo's prose pin.
-Patch and minor MRs auto-merge on green CI; major MRs wait for a human.
+Patch and minor MRs auto-merge on green CI. Major MRs wait for a human.
 
-Scenario: a prose release reaches every affected downstream without human toil
+Scenario: a prose release reaches every affected downstream unattended
   Status: implemented
   Given a new prose tag and its trigger into control
   When control's pipeline runs
@@ -28,7 +28,7 @@ Scenario: safe updates flow through unattended, breaking ones wait
   Then the MR auto-merges
   And a major-bump MR never auto-merges
 
-Scenario: a red downstream pipeline blocks propagation instead of shipping breakage
+Scenario: a red downstream pipeline blocks propagation instead of shipping a break
   Status: implemented
   Given a regen MR whose downstream pipeline fails
   When auto-merge is evaluated

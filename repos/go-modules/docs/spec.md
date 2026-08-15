@@ -13,18 +13,18 @@ First line of `che.yml`:
 # yaml-language-server: $schema=https://gitlab.com/konradodwrot/go-modules/-/raw/main/che/assets/data/che.schema.json
 ```
 
-Pin `main` to the release tag matching the installed che: each tag snapshots
-the schema (also a release asset).
+Pin `main` to the release tag matching the installed che. Each tag snapshots the
+schema (also a release asset).
 
 ## Load Validation
 
 che validates every loaded che.yml (local repo, composed specs, sourced-ref
-checkouts) against this schema. Violations warn by default, `--validate-spec
-error` (env `CHE_VALIDATE_SPEC=error`) aborts instead.
+checkouts) against this schema. Violations warn, `--validate-spec error` (env
+`CHE_VALIDATE_SPEC=error`) aborts.
 
 ## Full Example
 
-Every construct in one spec (schema-validated by the test suite):
+Every construct, schema-validated by the test suite:
 
 ```yaml
 # yaml-language-server: $schema=https://gitlab.com/konradodwrot/go-modules/-/raw/main/che/assets/data/che.schema.json
@@ -123,25 +123,30 @@ Spec-wide defaults + che knobs:
 - `profileWorkingDirectory` (path): load-ops source tree, default `.` (the checkout).
   Absolute, `~/`, `$VAR`, env vars expand. Relative resolves under the
   checkout. makeLinks/makeCopies globs and renderTemplates host sources resolve
-  against it. Home targeting is explicit via a `$HOME` dest rewrite (no implicit
-  `_home/` folder mapping). che.yml lookup, scripts, and repo-doc template
+  against it. Home targeting is explicit via a `$HOME` dest rewrite, no implicit
+  `_home/` folder mapping. che.yml lookup, scripts, and repo-doc template
   sources (repo dest) stay at the checkout.
 - `validateSpec` (`warn` | `error`): top-level only, flag and env override.
-- `dryRun` (`delta` | `all`): default dry-run mode, flag and env override.
+- `dryRun` (`delta` | `all` | `true` | `false`): default dry-run mode (`true`
+  aliases `delta`, `false` the default), flag and env override.
 - `profiles` (string list): profiles to run (autoDiscover skipped, runIf still
   enforced), `--profiles` and `CHE_PROFILE` override.
 - `skipRemoteRefs` (bool): skip sourced `include.profiles` refs, flag and env
   override.
-- `renderTemplates.skipSecrets` (bool): skip `op://` resolution (placeholders),
-  flag and env override.
+- `renderTemplates.skipSecrets` (bool): skip `op://` (1Password) and `gcp://`
+  (GCP Secret Manager) resolution (placeholders), flag and env override.
 <!-- [>] 🤖 -->
 - `skipOps` (op-name list): ops skipped everywhere: dropped from the run
   sequence, direct op subcommands become logged no-ops. `--skip-ops` and
   `CHE_SKIP_OPS` override.
+- `run.skipOps` (op-name list): ops skipped in the run sequence only (direct op
+  subcommands unaffected). `che run --skip-ops` and `CHE_RUN_SKIP_OPS` override.
 - `packages`: installPackages defaults: `file` (packages.yml path),
   `preferredInstallationMethods`,
   `binariesRemoteArchive.installDestinationCandidates`,
-  `completions.zsh.installDestinationCandidates`.
+  `completions.zsh.installDestinationCandidates`,
+  `manpages.installDestinationCandidates`, `updateCheck` (`enabled`,
+  `cooldown`). Cascades profile > spec > user config.
 - `otel`: OTLP telemetry knobs (`enabled`, `endpoint`, `protocol`, `metrics`,
   `logs`, `traces`), `CHE_OTEL_*` env wins. See
   [observability.md](observability.md).
@@ -151,9 +156,9 @@ Cascade, most nested wins: profile options > spec top-level options > che level
 (flags, env vars, user-config file, local spec `options:`) > defaults. See
 [Environment](#environment).
 
-The user-config file (`$XDG_CONFIG_HOME/che/config.yml`) is this same shape as a
-bare object (no `options:` wrapper). `runIf`/`profileWorkingDirectory` are spec-only
-there.
+The user-config file (`$XDG_CONFIG_HOME/che/config.yml`) takes this same shape as
+a bare object (no `options:` wrapper). `runIf` and `profileWorkingDirectory` are
+spec-only, ignored there.
 
 ### env
 
@@ -161,11 +166,11 @@ there.
 
 ### include
 
-`sources`: other specs composed into this one, as if running multiple specs
+`sources`: other specs composed into this one, as if running several specs
 together. Each entry a `<dir>` (absolute, relative, `~/`, `$VAR`) or `@<giturl>`
 (cloned/pulled into a managed cache checkout). Each composed spec keeps its own
-anchor, env, profile eligibility. Its profile names become referenceable from
-this spec's `include.profiles` (bare-name collision errors). Duplicates and
+anchor, env, profile eligibility, and its profile names become referenceable
+from this spec's `include.profiles` (bare-name collision errors). Duplicates and
 cycles load once. Recursive.
 
 ## Profile Block
@@ -196,19 +201,21 @@ profile runs its full op sequence, profile by profile.
 - `profileWorkingDirectory` (path): the profile's load-ops source tree. Unset: inherit
   spec, then che level (`--working-directory` / `CHE_WORKING_DIRECTORY`), then
   `.`.
+- `packages`: installPackages options for this profile (same shape as spec
+  `options.packages`). Empty fields inherit spec options, then user config.
 
 ## Dest Mapping
 
 A working-tree path maps onto its live dest as a system-root path (`etc/x` ->
-`/etc/x`), no implicit `_home/` folder mapping. Home targeting is
-explicit: a dest that resolves to an absolute path (`/...`) or expands `$HOME`
-lands there directly. Convention: keep host-home files under a `_home/` folder
+`/etc/x`), no implicit `_home/` folder mapping. Home targeting is explicit: a
+dest resolving to an absolute path (`/...`) or expanding `$HOME` lands there
+directly. Convention: keep host-home files under a `_home/` folder
 (leading-underscore sentinel, can't collide with a real `home` dir), rewritten
 onto `$HOME`.
 
 Dest strings expand env vars, `$HOME` bound to the invoking user's home
 (correct under sudo, where process `$HOME` differs). State home targeting
-explicitly, either per-file, as a glob prefix-swap, or as a glob sed rewrite:
+per-file, as a glob prefix-swap, or as a glob sed rewrite:
 
 ```yaml
 makeLinks:
@@ -248,7 +255,7 @@ flag > CHE_* env > user-config file > local che.yml options: > default
 ### User-config file
 
 `$XDG_CONFIG_HOME/che/config.yml` (see Paths) sets runtime options for every che
-run on this machine, over the repo's `che.yml` `options:`, under env vars and
+run on this machine: over the repo's `che.yml` `options:`, under env vars and
 flags. Bare object mirroring the che.yml [`options:`](#options) shape (no
 `options:` wrapper):
 
@@ -270,8 +277,8 @@ its spec's `autoDiscover` (a profile's `autoDiscover: false` still wins).
 
 ### Paths (XDG)
 
-Runtime data locations follow the XDG base-dir spec, each base overridable by a
-che-owned env:
+Runtime data follows the XDG base-dir spec, each base overridable by a che-owned
+env:
 
 | Purpose | Path under base | XDG base (`+/che`) | che override | Fallback |
 | --- | --- | --- | --- | --- |
@@ -287,18 +294,18 @@ fallback. `CHE_*` points at che's base directly (no `/che`), the XDG base gets
 
 ## include
 
-Additive. Seven sections:
+Additive. Eight sections:
 
 <!-- [>] 🤖 -->
 `profiles`, `makeLinks`, `makeCopies`, `renderTemplates`, `makeDirs`,
-`installPackages`, `runScripts`.
+`installPackages`, `installToolPackages`, `runScripts`.
 <!-- [<] 🤖 -->
 
 ### profiles
 
 Profile refs composed depth-first, in order, before this profile's own payload.
 A scalar names a local profile (cycles and undefined names error). A rich entry
-references a profile in another spec, loaded and anchored at its own checkout:
+references a profile in another spec, loaded and anchored at its own checkout.
 
 ```yaml
 include:
@@ -327,11 +334,11 @@ too), deduped by source + profile, cycle-guarded. `--skip-remote-refs` (env
 
 ### makeLinks
 
-Entries over git-tracked files under `root/`, repo-relative below it (outside
-any git repo the spec anchors at the nearest ancestor dir carrying a `che.yml`
-and file selection falls back to a filesystem walk). Symlinks
-to the derived host path (`root/etc/x` -> `/etc/x`, home targeting via a `$HOME`
-dest rewrite). Templates, `*.ontoHost.cp`, `.gitkeep` never link.
+Entries over git-tracked files under the profileWorkingDirectory,
+relative to it (outside any git repo the spec anchors at the nearest ancestor
+dir carrying a `che.yml`, and file selection falls back to a filesystem walk).
+Symlinks to the derived host path (`etc/x` -> `/etc/x`, home targeting via a
+`$HOME` dest rewrite). Templates, `*.ontoHost.cp`, `.gitkeep` never link.
 
 Items: glob string (brace-expanded, dest derived 1:1),
 `{source, dest: [paths]}` (one source file, explicit dests, `~/` or absolute ->
@@ -344,15 +351,15 @@ the repo-relative dest path before host mapping.
 ```yaml
 include:
   makeLinks:
-    - {source: HOME/**, dest: 's#^HOME#$HOME#'}
+    - {source: _home/**, dest: $HOME/**}
     - etc/{grafana,prometheus}/**
-    - {source: HOME/.config/foo/**, dest: 's#^HOME/.config/foo#$HOME/.config/bar#'}
+    - {source: _home/.config/foo/**, dest: 's:^_home/.config/foo:$HOME/.config/bar:'}
     - {source: files/config, dest: [$HOME/.config/mypy/config]}
 ```
 
-The first entry links `root/HOME/.config/x` to `~/.config/x`. The rewrite entry
-links `root/HOME/.config/foo/x` to `~/.config/bar/x`. The explicit-dest entry
-links one flattened source file to each listed host path.
+First entry: `_home/.config/x` -> `~/.config/x`. Rewrite entry:
+`_home/.config/foo/x` -> `~/.config/bar/x`. Explicit-dest entry: one
+flattened source file linked to each listed host path.
 
 ### makeCopies
 
@@ -361,7 +368,7 @@ to every item in `files`.
 
 ```yaml
 makeCopies:
-  - files: [{source: HOME/**, dest: 's#^HOME#$HOME#'}]
+  - files: [{source: _home/**, dest: 's:^_home:$HOME:'}]
   - owner: root
     ownerGroup: "0"
     chmod: "0644"
@@ -375,16 +382,20 @@ makeCopies:
 
 ### renderTemplates
 
-Perm-groups of `*.tpl` sources rendered through gomplate, op:// 1Password refs
-resolved at render time. Dest path decides target: relative -> repo, `~/` or
-absolute -> host. Source anchors by dest kind: host sources (glob form, derived
-dest, or any `~/`/absolute dest) are profileWorkingDirectory-relative, repo-doc sources
-(repo dest) checkout-relative. Glob and dest-omitted forms derive a host
-dest.
+Perm-groups of `*.tpl` sources rendered through gomplate, `op://` (1Password)
+and `gcp://` (GCP Secret Manager) refs resolved at render time. Dest path
+decides target: relative -> repo, `~/` or absolute -> host. Source anchors by
+dest kind: host sources (glob form, derived dest, or any `~/`/absolute dest) and
+repo-doc sources (repo dest) are both profileWorkingDirectory-relative. Glob and
+dest-omitted forms derive a host dest.
+
+A source may also be remote: `@<repo>//<path>[?ref=<ref>]`, explicit dest
+required. Dests expand env vars, including `${invokingSpecGitRoot}` (the
+top-level spec's checkout).
 
 ```yaml
 renderTemplates:
-  - templates: [{source: HOME/**, dest: 's#^HOME#$HOME#'}]
+  - templates: [{source: _home/**, dest: 's:^_home:$HOME:'}]
   - templates:
       - source: templates/1-env/local.env.ontoRepo.tpl
         dest:
@@ -429,7 +440,7 @@ derived-dest templates. Items: path string (brace-expanded), or `{dest:
 ```yaml
 makeDirs:
   - directories:
-      - HOME/.local/{bin,share}
+      - $HOME/.local/{bin,share}
   - chmod: "2775"
     directories:
       - {dest: ["/var/log/{grafana,prometheus}"]}
@@ -439,17 +450,35 @@ makeDirs:
 
 <!-- [>] 🤖 -->
 Packages installed from the packages file (default
-`$XDG_CONFIG_HOME/packages/packages.yml`, `--packages-file`, `packages.file`,
-`CHE_PACKAGES_FILE` relocate it). Runs after renderTemplates, before
-runScripts. Items: canonical name scalar, or `{name, version}` pinning a
-version over the entry's default. Composed profiles' lists concatenate and
-dedupe, `exclude.installPackages` drops matching names.
+`$XDG_CONFIG_HOME/packages/packages.yml`, relocated by `--packages-file`,
+`packages.file`, `CHE_PACKAGES_FILE`). Runs after renderTemplates, before
+runScripts. Items: canonical name scalar, or `{name, version}` pinning a version
+over the entry's default. Composed profiles' lists concatenate and dedupe,
+`exclude.installPackages` drops matching names.
 
 ```yaml
 include:
   installPackages:
     - ripgrep
     - {name: terraform, version: "1.10"}
+```
+<!-- [<] 🤖 -->
+
+### installToolPackages
+
+<!-- [>] 🤖 -->
+Tool-scoped packages installed from the packages file's `toolPackages` section,
+keyed by host tool. Runs with installPackages. Items per tool: name scalar, or
+`{name, version}` pinning over the entry's value. Composed profiles' lists
+concatenate per tool (later refs re-pin by name),
+`exclude.installToolPackages` drops names per tool.
+
+```yaml
+include:
+  installToolPackages:
+    vscode:
+      - golang.go
+      - {name: ms-python.python, version: "2024.14.0"}
 ```
 <!-- [<] 🤖 -->
 
@@ -466,16 +495,20 @@ runScripts:
 ## exclude
 
 Subtractive glob filter, applied last, wins over every include (rich entries
-too). Six flat string-list keys mirroring include's op sections. A match on
-source or any dest drops the item. installPackages matches canonical names.
+too). Seven keys mirroring include's op sections (`profiles` has no exclude):
+six flat string lists, plus `installToolPackages`, a per-tool map of string
+lists. A match on source or any dest drops the item. installPackages matches
+canonical names.
 
 ```yaml
 exclude:
-  makeLinks: [HOME/Library/**]
+  makeLinks: [_home/Library/**]
   makeCopies: [Library/LaunchDaemons/grafana.plist*]
-  renderTemplates: [HOME/.gitlab-runner/**]
+  renderTemplates: [_home/.gitlab-runner/**]
   makeDirs: [/var/log/grafana]
   installPackages: [terraform]
+  installToolPackages:
+    vscode: [ms-python.python]
   runScripts: [ci/zsh/scripts/installs/80-go-host-tools.zsh]
 ```
 

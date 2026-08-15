@@ -6,7 +6,7 @@ Single-page PDF resume generator, Markdown in, styled PDF out, Ruby only: kramdo
 
 ## Why It Exists
 
-A resume belongs in versioned Markdown, but hand-exporting a presentable PDF is unrepeatable. This repo makes the export one command: styling in plain CSS, real personal data never in the repo.
+A resume belongs in versioned Markdown, but hand-exporting a presentable PDF is unrepeatable. Here the export is one command: styling in plain CSS, real personal data never in the repo.
 
 ## Goals
 
