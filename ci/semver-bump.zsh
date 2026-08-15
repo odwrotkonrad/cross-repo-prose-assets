@@ -2,25 +2,19 @@
 ##[>] 🤖🤖
 set -euo pipefail
 
-content_dirs=(conventions repos shared templates)
-
-last=$(git describe --tags --abbrev=0 --match 'v[0-9]*' 2>/dev/null || true)
+#[why] resolve the latest tag from the remote, never the local clone: a stale or mid-delete local tag would otherwise decide the release
+last=$(git ls-remote --tags origin 'v[0-9]*' 2>/dev/null \
+  | awk -F/ '{print $NF}' | grep -v '\^{}' | sort -V | tail -1 || true)
 if [[ -z $last ]] {
   print v0.0.1
   exit 0
 }
 
+#[why] inference always yields patch: prose grows by adding files, so adds must not mint a minor. major/minor come only from an explicit `semver:` commit token
 bump=patch
-for line in ${(f)"$(git diff --name-status $last..HEAD -- $content_dirs)"}; {
-  case ${line[1]} {
-    (D|R) bump=major; break ;;
-    (A) bump=minor ;;
-  }
-}
 
 tokens=(${(f)"$(git log $last..HEAD --format=%B | sed -nE 's/.*semver: (major|minor|patch).*/\1/p')"})
 if (( ${#tokens} )) {
-  bump=patch
   if (( ${tokens[(I)minor]} )) bump=minor
   if (( ${tokens[(I)major]} )) bump=major
 }
