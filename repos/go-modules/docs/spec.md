@@ -53,11 +53,11 @@ base:
         files:
           - {source: Library/LaunchDaemons/otelcol.plist.ontoHost.cp, dest: [/Library/LaunchDaemons/otelcol.plist]}
     renderTemplates:
-      - templates: [{source: _home/**, dest: $HOME/**}]
+      - {source: _home/**, dest: $HOME/**}
       - owner: root
         ownerGroup: "0"
         chmod: "0440"
-        templates:
+        renderTemplates:
           - {source: etc/sudoers.d/configs.ontoHost.tpl, dest: [/etc/sudoers.d/configs]}
     makeDirs:
       - directories:
@@ -100,14 +100,13 @@ ontoRepo:
   options: {autoDiscover: true}
   include:
     renderTemplates:
-      - templates:
-          - source: templates/1-env/local.env.ontoRepo.tpl
-            dest:
-              - {path: .env, options: {writeType: mergeUpsert}}
-          - source: templates/3-audience/AGENTS.md.ontoRepo.tpl
-            dest:
-              - CLAUDE.md
-              - {path: AGENTS.md, options: {renderReferencedFiles: true}}
+      - source: templates/1-env/local.env.ontoRepo.tpl
+        dest:
+          - {path: .env, options: {writeType: mergeUpsert}}
+      - source: templates/3-audience/AGENTS.md.ontoRepo.tpl
+        dest:
+          - CLAUDE.md
+          - {path: AGENTS.md, options: {renderReferencedFiles: true}}
 ```
 
 ## Reserved Top-Level Keys
@@ -225,9 +224,8 @@ makeCopies:
       - {source: _home/**, dest: 's:^_home:$HOME:'}  # glob + sed rewrite
       - {source: _home/foo.ontoHost.cp, dest: [$HOME/.config/foo]}  # explicit
 renderTemplates:
-  - templates:
-      - {source: _home/**, dest: $HOME/**}
-      - {source: _home/x.tpl, dest: [$HOME/.config/x]}
+  - {source: _home/**, dest: $HOME/**}
+  - {source: _home/x.tpl, dest: [$HOME/.config/x]}
 makeDirs:
   - directories: [$HOME/.local/{bin,share}]
 ```
@@ -382,35 +380,36 @@ makeCopies:
 
 ### renderTemplates
 
-Perm-groups of `*.tpl` sources rendered through gomplate, `op://` (1Password)
-and `gcp://` (GCP Secret Manager) refs resolved at render time. Dest path
-decides target: relative -> repo, `~/` or absolute -> host. Source anchors by
-dest kind: host sources (glob form, derived dest, or any `~/`/absolute dest) and
-repo-doc sources (repo dest) are both profileWorkingDirectory-relative. Glob and
+A tree of `*.tpl` sources rendered through gomplate, `op://` (1Password) and
+`gcp://` (GCP Secret Manager) refs resolved at render time. Dest path decides
+target: relative -> repo, `~/` or absolute -> host. Source anchors by dest kind:
+host sources (glob form, derived dest, or any `~/`/absolute dest) and repo-doc
+sources (repo dest) are both profileWorkingDirectory-relative. Glob and
 dest-omitted forms derive a host dest.
 
 A source may also be remote: `@<repo>//<path>[?ref=<ref>]`, explicit dest
 required. Dests expand env vars, including `${invokingSpecGitRoot}` (the
 top-level spec's checkout).
 
+Each item is a node: a leaf (glob string, or `{source, dest}`) or a group (a
+node carrying its own nested `renderTemplates`).
+
 ```yaml
 renderTemplates:
-  - templates: [{source: _home/**, dest: 's:^_home:$HOME:'}]
-  - templates:
-      - source: templates/1-env/local.env.ontoRepo.tpl
-        dest:
-          - {path: .env, options: {writeType: mergeUpsert}}
-      - source: templates/3-audience/AGENTS.md.ontoRepo.tpl
-        dest:
-          - CLAUDE.md
-          - {path: AGENTS.md, options: {renderReferencedFiles: true}}
+  - {source: _home/**, dest: 's:^_home:$HOME:'}
+  - source: templates/1-env/local.env.ontoRepo.tpl
+    dest:
+      - {path: .env, options: {writeType: mergeUpsert}}
+  - source: templates/3-audience/AGENTS.md.ontoRepo.tpl
+    dest:
+      - CLAUDE.md
+      - {path: AGENTS.md, options: {renderReferencedFiles: true}}
 ```
 
-A `templates` glob source may also carry `{source, dest: <rule>}` (sed-style
-dest rewrite, template suffix stripped first, raw-body host dest like the bare
-glob form).
+A glob source may also carry `{source, dest: <rule>}` (sed-style dest rewrite,
+template suffix stripped first, raw-body host dest like the bare glob form).
 
-Dest: path string, or `{path, options}`:
+Dest: path string, list of paths, or `{path, options}`:
 
 - `writeType`: `""` (overwrite, default: autogen header + body) | `mergeUpsert`
   (env `KEY=VALUE` union under existing dest, no header).
@@ -418,18 +417,39 @@ Dest: path string, or `{path, options}`:
   whose format forbids comments, e.g. private keys).
 - `renderReferencedFiles` (bool): inline `@`-includes (overwrite path).
 
-A perm-group may carry group-level `options`, merged under each dest's options
-per field: fields the dest sets win (explicit `false` overrides group `true`),
-unset fields inherit the group's.
+A scalar `dest` is a dest rewrite rule only when it looks like one (`s<delim>…`
+or `<prefix>/**`), otherwise it is a plain path.
+
+#### Groups
+
+A group node sets `source` (a prefix), `ctx`, `options` and perms for everything
+nested under it, at any depth:
 
 ```yaml
 renderTemplates:
-  - options: {skipAutoGeneratedHeader: true}
-    templates:
-      - {source: templates/agents/ro.md.ontoRepo.tpl, dest: [.claude/agents/ro.md]}
-      - {source: templates/agents/rw.md.ontoRepo.tpl, dest: [.claude/agents/rw.md]}
-      - {source: templates/agents/gitignore.ontoRepo.tpl, dest: [{path: .claude/.gitignore, options: {skipAutoGeneratedHeader: false}}]}
+  - source: "@gitlab.com/konradodwrot/prose?ref=v0.0.4"
+    options: {skipAutoGeneratedHeader: true}
+    renderTemplates:
+      - {source: //repos/configs/purpose.md, dest: assets/docs-agents/purpose.md}
+      - source: //repos/configs/ai/claude-rules
+        renderTemplates:
+          - {source: /code/code.md, dest: root/_home/.config/claude/rules/code/code.md}
 ```
+
+Cascade, outermost first, innermost wins:
+
+- `source`: joined as a prefix. A remote prefix recombines rather than
+  concatenates, so the `?ref=` query stays last: prefix
+  `@<repo>?ref=<ref>` plus leaf `//<path>` yields `@<repo>//<path>?ref=<ref>`.
+  A leaf carrying its own `?ref=` overrides the group's. A local prefix joins as
+  a path.
+- `owner`, `ownerGroup`, `chmod`: per field.
+- `ctx`: per key.
+- `options`: per field, then each dest's own `options` win last (explicit
+  `false` on a dest overrides an inherited `true`).
+
+A node carrying nested `renderTemplates` may not also carry `dest`, a dest rule
+or a glob.
 
 ### makeDirs
 
@@ -514,9 +534,10 @@ exclude:
 
 ## Perms Cascade
 
-`owner`, `ownerGroup`, `chmod` on a makeCopies/renderTemplates/makeDirs group
-apply to every item in its `files`/`templates`/`directories` (glob matches
-included, last matching glob wins). Empty: code default.
+`owner`, `ownerGroup`, `chmod` on a makeCopies/makeDirs group apply to every
+item in its `files`/`directories`, on a renderTemplates group to every node
+nested under it at any depth (innermost non-empty field wins). Glob matches
+included, last matching glob wins. Empty: code default.
 
 ## See Also
 
