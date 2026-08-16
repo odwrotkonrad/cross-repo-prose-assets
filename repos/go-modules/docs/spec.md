@@ -422,8 +422,8 @@ or `<prefix>/**`), otherwise it is a plain path.
 
 #### Groups
 
-A group node sets `source` (a prefix), `ctx`, `options` and perms for everything
-nested under it, at any depth:
+A group node sets `source` and `dest` prefixes, `ctx`, `options` and perms for
+everything nested under it, at any depth:
 
 ```yaml
 renderTemplates:
@@ -432,8 +432,10 @@ renderTemplates:
     renderTemplates:
       - {source: //repos/configs/purpose.md, dest: assets/docs-agents/purpose.md}
       - source: //repos/configs/ai/claude-rules
+        dest: root/_home/.config/claude/rules
         renderTemplates:
-          - {source: /code/code.md, dest: root/_home/.config/claude/rules/code/code.md}
+          - {source: /code/code.md, dest: code/code.md}
+          - {source: /docs/prose.md, dest: docs/prose.md}
 ```
 
 Cascade, outermost first, innermost wins:
@@ -443,12 +445,16 @@ Cascade, outermost first, innermost wins:
   `@<repo>?ref=<ref>` plus leaf `//<path>` yields `@<repo>//<path>?ref=<ref>`.
   A leaf carrying its own `?ref=` overrides the group's. A local prefix joins as
   a path.
+- `dest`: on a group it is one path, joined onto every descendant's
+  repo-relative dest. Host dests anchor themselves: a descendant dest starting
+  with `/`, `~` or `$` is left alone. A group dest takes no per-dest `options`.
 - `owner`, `ownerGroup`, `chmod`: per field.
 - `ctx`: per key.
-- `options`: per field, then each dest's own `options` win last (explicit
-  `false` on a dest overrides an inherited `true`).
+- `options`: per field, then each dest's own `options` win last. An explicitly
+  set `false` overrides an inherited `true`, so a group can carry the common
+  case and a single leaf can opt out.
 
-A node carrying nested `renderTemplates` may not also carry `dest`, a dest rule
+A node carrying nested `renderTemplates` may not also carry a dest rewrite rule
 or a glob.
 
 ### makeDirs
