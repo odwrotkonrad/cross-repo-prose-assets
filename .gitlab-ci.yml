@@ -52,30 +52,15 @@ tag-mint:
   script:
     - make tag-mint
 
-tag-delta:
-  stage: release
-  image: $CI_IMAGE
-  rules:
-    - if: $CI_COMMIT_TAG =~ /^v[0-9]/
-  variables:
-    GIT_DEPTH: "0"
-  script:
-    - PROSE_PREV_TAG=$(git describe --tags --abbrev=0 --match 'v[0-9]*' "$CI_COMMIT_TAG^" 2>/dev/null || true)
-    - echo "PROSE_TAG=$CI_COMMIT_TAG" > delta.env
-    - echo "PROSE_PREV_TAG=$PROSE_PREV_TAG" >> delta.env
-    - cat delta.env
-  artifacts:
-    reports:
-      dotenv: delta.env
-
 trigger-control:
   stage: trigger
   rules:
     - if: $CI_COMMIT_TAG =~ /^v[0-9]/
-  needs: [tag-delta]
-  #[why] no inherit:variables:false here: it drops tag-delta's dotenv along with the globals, and
-  #   re-declaring PROSE_TAG: $PROSE_TAG to win it back is self-referential, which fails downstream
-  #   pipeline creation outright. the dotenv carries the tag, forward passes it on
+  #[why] PROSE_TAG must be a yaml variable: forward:yaml_variables carries those, dotenv from needs is
+  #   job-scoped and never reaches the downstream. CI_COMMIT_TAG is predefined on tag pipelines, so no
+  #   upstream job is needed to produce it
+  variables:
+    PROSE_TAG: $CI_COMMIT_TAG
   trigger:
     project: konradodwrot/control
     branch: main

@@ -7,6 +7,14 @@ downstreams from the dependency graph, regenerates each one via its own
 `make render-templates`, and opens a bot MR bumping the repo's prose pin.
 Patch and minor MRs auto-merge on green CI. Major MRs wait for a human.
 
+Scenario: the released tag reaches control as a pipeline variable
+  Status: implemented
+  Given the trigger job forwards its yaml variables to the downstream
+  And job-scoped dotenv from an upstream job never crosses into a downstream pipeline
+  When a tag pipeline triggers control
+  Then control's pipeline carries the released tag as a pipeline variable
+  And control resolves it without querying prose for the tag
+
 Scenario: a prose release reaches every affected downstream unattended
   Status: implemented
   Given a new prose tag and its trigger into control
