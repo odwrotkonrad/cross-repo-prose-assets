@@ -73,8 +73,14 @@ trigger-control:
   rules:
     - if: $CI_COMMIT_TAG =~ /^v[0-9]/
   needs: [tag-delta]
+  #[why] inherit:variables:false drops the whole global block, so the tag has to be re-declared here:
+  #   forward.yaml_variables only forwards a job's own variables:, and tag-delta's dotenv reaches this
+  #   job but not the downstream pipeline. without them control's verify aborts on unset PROSE_TAG
   inherit:
     variables: false
+  variables:
+    PROSE_TAG: $PROSE_TAG
+    PROSE_PREV_TAG: $PROSE_PREV_TAG
   trigger:
     project: konradodwrot/control
     branch: main
