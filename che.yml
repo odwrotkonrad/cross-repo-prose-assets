@@ -6,7 +6,7 @@ ontoRepo:
     renderTemplates:
       - source: templates/2-data
         dest: assets/data
-        renderTemplates:
+        <<<:
           - {source: /makefile-agents.md.ontoRepo.tpl, dest: makefile.agents.md}
           - {source: /repo-structure.md.ontoRepo.tpl, dest: repo-structure.md}
       - source: shared/license/LICENSE
