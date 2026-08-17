@@ -23,7 +23,6 @@ per-pipeline `apt-get` + `go install` + `curl` bootstrap:
 | ---- | ------- |
 | go, clang, make, git | core build toolchain (CGO for che/tree-sitter) |
 | che | dotfile loader, renders repo + host templates |
-| render-tpl | ad-hoc template rendering |
 | lefthook | git hooks (pre-commit docs check) |
 | yq | YAML query |
 | zig | linux cross-compile backend (goreleaser) |
