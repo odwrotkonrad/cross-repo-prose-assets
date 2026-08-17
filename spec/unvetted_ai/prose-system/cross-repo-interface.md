@@ -19,7 +19,7 @@ Scenario: the whole workspace graph stays derivable from per-repo declarations
   Status: implemented
   Given every repo's interface file plus bootstrap seed entries for repos not yet declaring
   When control aggregates
-  Then it renders one generated `deps-graph.yml` merging declarations over seeds
+  Then it renders one generated `deps/deps-graph.yml` merging declarations over seeds
   And the generated file is committed for readability, never hand-edited
 
 Scenario: a dangling consumption is an error, not silent drift

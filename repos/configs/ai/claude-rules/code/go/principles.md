@@ -48,6 +48,7 @@
 
 ### API
 
-- Documentation is for users: doc comments on every exported symbol.
+- Documentation is for users: doc comments on every exported symbol, none on unexported ones.
+- A doc comment states the symbol's purpose, briefly. Never restate the signature or narrate the body.
 - Tests lock in the API contract.
 - gofmt settles style.

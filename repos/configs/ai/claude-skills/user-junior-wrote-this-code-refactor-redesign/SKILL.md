@@ -11,7 +11,7 @@ arguments: [scope]
 
 Scope: `$scope`, required, one of:
 
-- `nontest`: all non-test code. Test code is read-only context: never edit, move, delete, or rename a test file, fixture, or spec. Adjust NOTHING under test trees. If a redesign breaks tests, change the production design, then report which tests block it.
+- `nontest`: all non-test code. Test code is read-only context: never edit, move, delete, or rename a test file, fixture, or spec. Adjust NOTHING under test trees. If a redesign breaks tests, change the production design and only then report which tests block it.
 - `test`: all test code (test files, fixtures, specs, harnesses). Non-test code is read-only context: never edit production code, not one line, not to "unblock" a test redesign. Report blockers instead.
 
 Any other value, or empty: stop and ask for the scope.
