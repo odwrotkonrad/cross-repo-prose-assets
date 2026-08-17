@@ -27,9 +27,9 @@ Lang: `$lang` (empty → none). When set, apply these design principles to every
 Top-down, recursive:
 
 1. Look at the targets from high level: file structure, module boundaries, how pieces relate.
-2. Make a plan: what to restructure, what to touch per file, in what order.
+2. Plan: what to restructure, what to touch per file, in what order.
 3. Execute the plan.
-4. Repeat the same look-plan-execute procedure for smaller pieces (a file, a function cluster) as needed.
+4. Repeat look-plan-execute on smaller pieces (a file, a function cluster) as needed.
 
 ## Instructions
 
@@ -52,8 +52,8 @@ If tests cover a target, run them after changes.
 
 ## Bugs
 
-Surfaced a bug: tell the user, let them decide. Non-interactive session: use best judgment, fix it, report what and why.
+Hit a bug: tell the user, let them decide. Non-interactive session: use best judgment, fix it, report what and why.
 
 ## Inconsistencies
 
-Surfaced an inconsistency (inaccurate, contradictory, out of sync with the repo): tell the user, let them decide. Non-interactive session: resolve it with best judgment, keep the repo coherent, report what and why.
+Hit an inconsistency (inaccurate, contradictory, out of sync with the repo): tell the user, let them decide. Non-interactive session: resolve it with best judgment, keep the repo coherent, report what and why.

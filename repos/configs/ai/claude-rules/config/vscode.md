@@ -19,7 +19,7 @@ Library/Application Support/Code/User/
 
 Read `.exported/` for available commands and settings.
 
-Extension docs: `/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/<ext>/package.json` (`<ext>` = git, github, …).
+Extension docs: `/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/<ext>/package.json` (`<ext>` = git, github, ...).
 
 ```jsonc
 // <ext>/package.json structure

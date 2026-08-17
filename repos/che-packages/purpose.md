@@ -6,7 +6,7 @@ che's package catalog: `packages.yml` declaring every package, its install metho
 
 ## Why It Exists
 
-The catalog is data on its own release cadence: a version bump or a new package should not enter through a Go module, a `go.work` entry and a monorepo pipeline. Proving a package installs breaks for different reasons than proving an installer works, so the two suites live apart: method coverage stays with che's code, package coverage lives here with the data.
+The catalog is data on its own release cadence. A version bump or a new package should not enter through a Go module, a `go.work` entry and a monorepo pipeline. Proving a package installs breaks for different reasons than proving an installer works, so the suites live apart: method coverage stays with che's code, package coverage lives here with the data.
 
 ## Goals
 

@@ -18,7 +18,7 @@ paths:
 ### Documentation
 
 - Prefix shell commands with `$`: `` `$ git status` ``.
-- Write docstrings and comments abrupt, terse, specific.
+- Keep docstrings and comments abrupt, terse, specific.
 
 ### Variable Naming
 

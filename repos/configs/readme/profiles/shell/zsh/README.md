@@ -14,7 +14,7 @@ Argument completion for files and dirs.
 
 `_deep_files` zstyle settings (`profiles/shell/zsh/base/root/etc/zsh/zshrc.d/auto.d/00-base/40-completions.zsh`).
 
-The engine claims the empty function field of the completion context, so the lookup context is `:completion:_deep_files:<completer>:<command>:<argument>:<group>`. `:completion:_deep_files:*` scopes a style to every wrapped command, `:completion:_deep_files:*:cd:*` to one command, most specific pattern wins. Command-scoped patterns without the function field (`:completion:*:cd:*`) still match.
+The engine claims the context's empty function field, so lookups are `:completion:_deep_files:<completer>:<command>:<argument>:<group>`. `:completion:_deep_files:*` scopes a style to every wrapped command, `:completion:_deep_files:*:cd:*` to one. Most specific pattern wins. Command-scoped patterns without the function field (`:completion:*:cd:*`) still match.
 
 Group names carry a signed suffix: `<scope>[-N][+M]`. `-N` anchors at the N-th ancestor of PWD, bare name = that anchor's children, `+M` adds M depth. Unknown names are skipped silently.
 

@@ -5,7 +5,7 @@ paths:
 
 ## ZSH Functions
 
-Autoload from `zsh/<phase>.d/functions/`: `zshenv.d` all shells, `zshrc.d` interactive. Filename = function name (`rm` shadows command, `fn-root-*` called as-is).
+Autoload from `zsh/<phase>.d/functions/`: `zshenv.d` for all shells, `zshrc.d` for interactive. Filename is the function name (`rm` shadows the command, `fn-root-*` called as-is).
 
 Put tiny eager helpers inline in `10-functions.zsh`. Give larger or lazy functions their own autoload file under `functions/`.
 

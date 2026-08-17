@@ -2,7 +2,7 @@
 
 <!-- [>] 🤖🤖 -->
 
-A local watcher keeps generated files fresh in local worktrees: on a new prose
+A local watcher keeps generated files fresh in local worktrees. On a new prose
 tag it re-renders, per checkout, only outputs git does not track. Tracked files
 change through the regen MR flow alone.
 
