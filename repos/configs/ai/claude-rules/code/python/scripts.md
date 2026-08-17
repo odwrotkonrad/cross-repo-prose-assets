@@ -16,9 +16,9 @@ paths:
 - Open every script with a module docstring (see Example).
 - Trace input-to-output as numbered steps.
 - List invocation forms under `Examples:`, one `$ <script> ...` per synopsis plus `$ <script> --help`.
-- List non-obvious external interfaces, split by direction, omitting empty sections and stdio:
-  - `Upstream Interfaces with:` for consumers of the printed output (`$ duti`, `$ alias -s`).
-  - `Downstream Interfaces with:` for sources read/invoked (config files, URL, cache).
+- List non-obvious external interfaces, split by direction, dropping empty sections and stdio:
+  - `Upstream Interfaces with:` consumers of the printed output (`$ duti`, `$ alias -s`).
+  - `Downstream Interfaces with:` sources read or invoked (config files, URL, cache).
 - List every exit code under `Exit Codes:`.
 
 ### Input
@@ -29,11 +29,10 @@ paths:
   - `Action(lib_param.BaseAction)`: add own actions. Base `USAGE` (`--help`/`-h`) is default.
   - `Config(lib_cfg.BaseConfig)` (only with a config file): set `NAME` ClassVar (`/etc/custom/<NAME>`) and typed `data` field. Base reads+merges system+user files on construction.
   - `Input(lib_input.BaseInput)`: set `PARAMS` (and `CONFIG`) ClassVars and matching `params`/`config` fields. Set `ARGUMENTS` on a `Parameters` with positional args.
-- Make `data` a plain typed field (`dict[...]` or `BaseModel`), attribute access (`config.data.field`). Pass `config.data` to handlers.
+- Keep `Config.data` a plain typed field (`dict[...]` or `BaseModel`), never `RootModel`. Attribute access (`config.data.field`), pass `config.data` to handlers.
 - Validate natively: `Input.validate_input(argv)` → `(input, error)`. Builds `params` (`from_argv` resolves action, shapes fields) and `config`.
-- Validate/prepare with pydantic validators. Reject by raising domain `err.Error` (subclasses `Exception`, propagates unwrapped). `validate_input` catches it (stray `ValidationError` → `Errors.ARGS`), keeping the rest exception-free.
+- Validate and prepare with pydantic validators. Reject by raising domain `err.Error` (subclasses `Exception`, propagates unwrapped). `validate_input` catches it (stray `ValidationError` → `Errors.ARGS`), keeping the rest exception-free.
 - Declare unused slots as `None` (no `Options` for flag-less, no `Config` for config-less).
-- Keep `Config.data` a plain typed field, never `RootModel`.
 - Let handlers return results directly, no `Output` model.
 
 ### Errors
@@ -42,7 +41,7 @@ paths:
 - Reuse `1x` lib codes from `root_scripts_lib/errors.py`: `Errors.ARGS`, `Errors.CONFIG`, `Errors.FILE_NOT_FOUND`, `Errors.NETWORK`.
 - Define domain errors in the `2x` band, numbering each script from `21`.
 - Declare a local `Errors(lib_err.Errors)`: add `2x` codes, extend `MESSAGES` as `lib_err.Errors.MESSAGES | {domain codes}` (own entries win), keep `lib_err.Errors.MESSAGES` untouched.
-- Return an `Error` (code + context, e.g. `{path}`) from where the failure is detected, alongside output. `main` propagates it to the gate, which resolves via `Errors.message(error)`.
+- Return an `Error` (code plus context, e.g. `{path}`) alongside output, from where the failure is detected. `main` propagates it to the gate, which resolves it via `Errors.message(error)`.
 - Call `sys.exit` only in the `__main__` gate.
 
 ### Structure
@@ -187,12 +186,11 @@ if __name__ == "__main__":
 ## Testing
 
 - Test every script under `tests/scripts/python/<script-name>/`.
-- Declare cases as data in a sibling `cases.yml`: `name`, `input`/`args`, expected `exit`, expected `stdout` (fixture filename) or `stderr`.
+- Declare cases as data in a sibling `cases.yml`, never in the test body: `name`, `input`/`args`, expected `exit`, expected `stdout` (fixture filename) or `stderr`.
 - Group cases into `##[>] positive` / `##[>] error` sections.
 - Load with `load_cases`, drive one parametrized `test_case` via `@cases(...)` (ids from `name`).
 - Reuse `root_scripts_test_lib`: `load_cases`/`cases`, `run`, `match_line`.
 - Reuse shared `test_show_usage` (asserts `--help`/`-h` prints docstring, exits `0`).
-- Wrap expected `stderr`/`stdout` in `/.../ ` for regex (via `match_line`). Bare string matches exactly.
+- Wrap expected `stderr`/`stdout` in `/.../ ` for regex (via `match_line`). A bare string matches exactly.
 - Prefer fixture files under `fixture/` (staged into `tmp_path` per case).
-- Keep cases in `cases.yml`, not the test body.
 <!-- ##[<] 🤖🤖 -->

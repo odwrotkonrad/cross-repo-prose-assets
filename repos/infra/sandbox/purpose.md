@@ -6,7 +6,7 @@ AI agent session sandbox on a k8s cluster.
 
 ## Why It Exists
 
-Runs claude isolated from the host, so it can act freely without risking it.
+Isolates claude from the host, so it can act freely without risking it.
 
 ## Goals
 

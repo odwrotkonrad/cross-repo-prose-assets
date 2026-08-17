@@ -4,8 +4,8 @@
 
 A fresh prose tag triggers the `control` pipeline. Control resolves affected
 downstreams from the dependency graph, regenerates each one via its own
-`make render-templates`, and opens a bot MR bumping the repo's prose pin.
-Patch and minor MRs auto-merge on green CI. Major MRs wait for a human.
+`make render-templates`, and opens a bot MR bumping the repo's prose pin. Patch
+and minor MRs auto-merge on green CI. Major MRs wait for a human.
 
 Scenario: the released tag reaches control as a pipeline variable
   Status: implemented

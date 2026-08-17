@@ -6,10 +6,10 @@ Spec-driven dotfile configuration loader: detects OS+arch+virt, resolves a profi
 
 ## Why It Exists
 
-Shell-script dotfile loading is fragile, imperative, host-specific. One declarative spec drives every host. The render engine lives here, in its only consumer: che and repo docs generation share one implementation.
+Shell-script dotfile loading is fragile, imperative, host-specific. One declarative spec drives every host instead. The render engine lives here because che is its only consumer, so che and repo docs generation share one implementation.
 
 ## Goals
 
 - Idempotent host loading: symlink, copy, render, prune, verify.
-- Generated repo docs: `*.ontoRepo.tpl` rendering keeps agent files and README fresh.
-- Releases ship one `che` binary: the render engine is a subcommand tree, not separate binaries.
+- `*.ontoRepo.tpl` rendering keeps agent files and README fresh.
+- Releases ship one `che` binary. The render engine is a subcommand tree, not separate binaries.

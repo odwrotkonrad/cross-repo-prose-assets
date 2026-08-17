@@ -4,7 +4,7 @@
 
 One semver-tagged `prose` repo holds all workspace prose: conventions, purpose
 docs, README sources, specs, shared fragments, canonical doc templates.
-Downstream repos own assembly: their `che.yml` renderTemplates consume prose
+Downstream repos own assembly, their `che.yml` renderTemplates consuming prose
 artifacts at a pinned version. Prose ships artifacts, never renders into other
 repos.
 

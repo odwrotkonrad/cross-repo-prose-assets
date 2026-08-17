@@ -112,7 +112,7 @@ paths:
 | - | ${ZDOTDIR}/.zlogout           | login shell exit (1st)  |
 | - | /etc/zlogout                  | login shell exit (2nd)  |
 
-Each phase has `<phase>.d/` with `functions/` (autoloaded onto `fpath`) and `auto.d/` (sourced recursively in path name order, each profile owning a subdir, e.g. `auto.d/00-base/`, `auto.d/extras/`). `/etc/zshenv` loads `zshenv.d/` (all shells), `/etc/zshrc` loads `zshrc.d/` (interactive), same split in user space. Put always-available helpers in `zshenv.d/`, interactive-only in `zshrc.d/`.
+Each phase has a `<phase>.d/` holding `functions/` (autoloaded onto `fpath`) and `auto.d/` (sourced recursively in path name order, one subdir per profile: `auto.d/00-base/`, `auto.d/extras/`). `/etc/zshenv` loads `zshenv.d/` (all shells), `/etc/zshrc` loads `zshrc.d/` (interactive). User space splits the same way. Put always-available helpers in `zshenv.d/`, interactive-only ones in `zshrc.d/`.
 
 ### Documentation
 
@@ -125,8 +125,6 @@ Each phase has `<phase>.d/` with `functions/` (autoloaded onto `fpath`) and `aut
 - `zshbuiltins`: builtin commands, autoload, setopt, zstyle, bindkey
 - `zsh`: overview, invocation, startup files, compatibility, manpage index
 - `zshmisc`: grammar, redirection, functions, traps, prompt escapes, conditionals, job control
-
-and these:
 - `zshroadmap`: overview, startup, interactive use, pattern matching
 - `zshmodules`: zmodload, zsh/complete, zsh/pcre, zsh/zutil, zsh/datetime
 - `zshexpn`: expansion, parameter, history, globbing, brace

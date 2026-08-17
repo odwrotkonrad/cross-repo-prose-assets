@@ -8,10 +8,10 @@ loading, deep-merge, XDG fallback, `CodedError` exit codes), `climain`
 
 ## Why It Exists
 
-`get-os-open-files-with` and `get-term-open-files-with` carried byte-identical
-config loaders and main-shape boilerplate.
+`get-os-open-files-with` and `get-term-open-files-with` each carried a
+byte-identical config loader and main-shape boilerplate.
 
 ## Goals
 
-- One config loader, one CLI main shape for the get-* CLIs.
+- One config loader and one CLI main shape for the get-* CLIs.
 - Minimal dependency surface: `gopkg.in/yaml.v3` only.
