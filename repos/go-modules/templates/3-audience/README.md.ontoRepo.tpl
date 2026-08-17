@@ -26,8 +26,8 @@ Pin a version via its versioned formula:
 brew install che@0.0.67
 ```
 
-Binary formula for `{darwin,linux}_{amd64,arm64}`: installs `che` and the render
-CLIs from the prebuilt release archives, updated by each che tag pipeline. The
+Binary formula for `{darwin,linux}_{amd64,arm64}`: installs `che` from the
+prebuilt release archives, updated by each che tag pipeline. The
 tap is mirrored to [GitHub](https://github.com/odwrotkonrad/homebrew-tap), which
 `brew tap` resolves by default.
 
@@ -45,7 +45,7 @@ Pin a version (the pool keeps every release):
 sudo apt install che=0.0.67
 ```
 
-Binary package for `linux_{amd64,arm64}`: installs `che` and the render CLIs
+Binary package for `linux_{amd64,arm64}`: installs `che`
 into `/usr/bin`. The repo is GPG-signed and rebuilt from the package registry
 by each che tag pipeline.
 

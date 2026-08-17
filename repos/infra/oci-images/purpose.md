@@ -5,7 +5,7 @@
 Two CI base images for the `konradodwrot` repos, each a multi-arch buildx
 manifest (amd64 native, arm64 qemu-emulated) in this project's container
 registry. `ci-linux`: `debian:bookworm-slim` plus the shared CI toolchain (go,
-che, render-tpl, lefthook, yq, zsh, clang, make, git, zig, goreleaser,
+che, lefthook, yq, zsh, clang, make, git, zig, goreleaser,
 golangci-lint, terraform, glab, op). `ci-linux-dind`: ci-linux plus the static
 docker CLI for docker-in-docker jobs. A che release (go-modules main) rebuilds
 here, then chains to the `infra/sandbox` image, which owns its own bake.
