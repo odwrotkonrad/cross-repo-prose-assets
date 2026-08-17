@@ -26,9 +26,9 @@ When in doubt: MARK IT.
 
 ### 🛑 No Comments
 
-Emit zero comments in AI-generated code: no explanatory, convention-label, header/banner, schema-note, TODO/FIXME, docstring, inline, or commented-out code. Every file type. Put explanations in chat.
+Emit zero comments in AI-generated code: no explanatory, convention-label, header/banner, schema-note, TODO/FIXME, inline, or commented-out code. Every file type. Put explanations in chat.
 
-🚫 NEVER clarify code with comments. ZERO. No doc comments on types/functions, no field annotations, no allowed-value lists, no restating the line below. "Documents the API" is NOT permission: names and types ARE the docs. Unclear name → rename, NEVER annotate. Every clarifying comment is a defect: delete on sight.
+🚫 NEVER clarify code with comments. ZERO. No field annotations, no allowed-value lists, no restating the line below. "Documents the API" is NOT permission for internal code: names and types ARE the docs. Unclear name → rename, NEVER annotate. Every clarifying comment is a defect: delete on sight.
 
 🚫 Labeled comments (`[why]`, `[what]`, `[where]`) are comments. The label notation defines HOW a requested comment is written, NEVER a license to write one. "This context matters", "future reader needs this", "non-obvious decision" → chat, commit message, or docs file. NEVER a comment. Nothing justifies an unrequested comment.
 
@@ -36,6 +36,24 @@ Before writing/editing ANY file, check for a comment: delete it, move to chat. C
 
 Add comments ONLY when the current request explicitly says "comment" (or equivalent). None of these are permission: a comment-full file, a convention doc, an "explain/document/annotate" request, surrounding commented code, "important context".
 
-ONE exception: the marking section above is MANDATORY, never overridden by this rule.
+### ✅ Docstrings On The Exported Interface
+
+TWO exceptions to the ban, both mandatory:
+
+1. The 🤖 marking section above, never overridden by this rule.
+2. A docstring on every exported symbol, for an audience outside the code.
+
+Exported means the public interface others call: an exported Go symbol, a
+published module's API, a CLI entrypoint. Internal and unexported code gets
+nothing.
+
+State the symbol's purpose, briefly. One line where one line does. Never
+overexplain, never restate the signature, never narrate the body. Names and
+types still carry the detail: the docstring says what the symbol is for.
+
+```go
+// Render applies the template at src and writes the result to dst.
+func Render(src, dst string) error {
+```
 
 When in doubt: NO COMMENTS.

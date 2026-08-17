@@ -29,10 +29,11 @@ type OPRequestTimeoutInt = int
 
 ### Docstrings
 
-- *What* goes in the docstring `"""..."""`.
+- Docstring every exported symbol (a public module's API, a CLI entrypoint). Private helpers get none.
+- *What* goes in the docstring `"""..."""`, briefly. Never restate the signature.
 - *Why* goes above the function, only when non-obvious and explicitly asked.
-- Trace the input-to-output path as a numbered list.
-- List non-obvious external interfaces (filesystem, network, `op read`, URL) under `Interfaces with:`. Omit `stdio`.
+- Trace the input-to-output path as a numbered list, only when the path is non-obvious.
+- List non-obvious, unavoidable external interfaces (filesystem, network, `op read`, URL) under `Interfaces with:`. Omit `stdio`.
 
 ```python
 # why it exists?
@@ -44,8 +45,8 @@ def f(arg: InT, opt: OptT = default) -> OutT:
     3. <return output>.
 
     Interfaces with:
-      - `$ <cmd>` — <external interface>
-      - <url> — <external interface>
+      - `$ <cmd>`: <external interface>
+      - <url>: <external interface>
     """
 ```
 
