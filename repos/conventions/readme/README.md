@@ -18,7 +18,7 @@ All in `prose/conventions/`, each with a runnable `example/`:
 - `templates/convention.md`: repo docs generated with che templates pinned to a prose version.
 - `ci/convention.md`: lefthook pre-commit hooks, re-run in CI.
 - `license/convention.md`: every public repo carries an unmodified MIT `LICENSE`, rendered from prose.
-- `spec-scenarios/convention.md`: behavior specs as Gherkin-style markdown with per-scenario statuses and vetting dirs.
+- `spec-scenarios/convention.md`: behavior specs as markdown user stories (`.story.md`, the default) and Gherkin scenarios (`.scenarios.md`), with per-item statuses and vetting dirs.
 - `claude-agents/convention.md`: per-repo claude agents, che-rendered into `.claude/` on virt only.
 
 ## License
