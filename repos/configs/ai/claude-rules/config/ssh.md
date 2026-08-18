@@ -16,7 +16,8 @@ profiles/misc/ssh/:
   root/_home/.ssh/:
     config:  # client config
   root/etc/zsh/zshenv.d/functions/:
-    fn-ssh-generate-keys:
+    fn-ssh-generate-keys:  # mints id_access + id_signing, then publishes them
+    fn-ssh-publish-keys:  # registers both on gitlab, appends signer to allowed_signers
     fn-ssh-test-git-connection:
   root-virt/_home/.ssh/:  # virt-only sandbox keypair renders (op://)
     id_access.ontoHost.tpl:
