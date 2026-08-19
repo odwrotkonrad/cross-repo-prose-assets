@@ -144,8 +144,9 @@ Spec-wide defaults and che knobs:
   `preferredInstallationMethods`,
   `binariesRemoteArchive.installDestinationCandidates`,
   `completions.zsh.installDestinationCandidates`,
-  `manpages.installDestinationCandidates`, `updateCheck` (`enabled`,
-  `cooldown`). Cascades profile > spec > user config.
+  `manpages.installDestinationCandidates`, `source` (`url`, `ref`),
+  `autoUpdate` (`enabled`, `if.refIsLatest.cooldown`,
+  `if.dryRunIsTrue.enabled`). Cascades profile > spec > user config.
 - `otel`: OTLP telemetry knobs (`enabled`, `endpoint`, `protocol`, `metrics`,
   `logs`, `traces`), `CHE_OTEL_*` env wins. See
   [observability.md](observability.md).
