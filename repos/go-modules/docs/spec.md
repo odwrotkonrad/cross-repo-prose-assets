@@ -192,10 +192,19 @@ every eligible profile runs its full op sequence, profile by profile.
   `options.autoDiscover`, then `false` (runs only via `--profiles` or
   `include.profiles`).
 - `runIf` (string list): predicates, ALL must pass. `<source>` (truthy:
-  builtin iff `true`, env iff set non-empty) or `<source> == <literal>`
-  (string compare). Sources: `builtin:isOs` (`macos`/`linux`), `builtin:isVirt`
-  (`true`/`false`), `env:<NAME>`. Empty: always. `--skip-run-if` (env
+  builtin iff `true`, env iff set non-empty, cmd iff exit 0) or
+  `<source> == <literal>` (string compare). Sources: `builtin:isOs`
+  (`macos`/`linux`), `builtin:isVirt` (`true`/`false`), `env:<NAME>`,
+  `cmd:<argv>` (`true`/`false`). Empty: always. `--skip-run-if` (env
   `CHE_SKIP_RUN_IF`): all pass.
+  `cmd:<argv>` runs the command and passes on exit code 0. Use it to gate on
+  state no variable holds (a tool authenticated, a daemon answering). stdout and
+  stderr are discarded: the exit code is the whole contract. Evaluated on every
+  use, never cached like the immutable `builtin:` sources, so a gate over
+  changing state stays truthful. The argv splits on whitespace and executes
+  directly: no shell, so quotes and operators are not interpreted and a command
+  needing shell syntax names its interpreter (`cmd:zsh -c ...` passes each
+  whitespace-separated word as its own argument).
 - `logLevel` (`error`|`warn`|`info`|`debug`|`trace`): human-log level around
   this profile's ops. Unset: inherit spec, then che level.
 - `profileWorkingDirectory` (path): the profile's load-ops source tree. Unset: inherit

@@ -17,7 +17,7 @@ render-templates:
 semver-next:
 	@ci/semver-bump.zsh
 
-#[what] mint and push the next semver tag (CI: authed via PROSE_TAG_TOKEN)
+#[what] mint and push the next semver tag (CI: authed via TAG_TOKEN)
 tag-mint:
 	@ci/tag-mint.zsh
 ##[<] Release
