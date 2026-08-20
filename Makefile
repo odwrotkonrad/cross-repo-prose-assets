@@ -1,32 +1,33 @@
 ##[>] 🤖🤖
-#[what] Project's Makefile
 SHELL := zsh
 
 WRAPPERS := repo-prepare-dev-env
-COMMANDS := render-templates repo-ci-prepare-hooks repo-ci-precommit-all semver-next tag-mint
+COMMANDS := render-templates repo-render-env repo-ci-prepare-hooks repo-ci-precommit-all semver-next tag-mint
 
 .PHONY: $(WRAPPERS) $(COMMANDS)
 
 ##[>] Dev Environment [genai-include]
-#[why] render precedes hooks: the docsgen pre-commit hook runs render-templates and fails on drift,
-#   so a fresh clone whose generated files were never rendered would fail its first commit
 #[what] make a fresh clone a working checkout: generated docs, git hooks
-repo-prepare-dev-env: render-templates repo-ci-prepare-hooks
+repo-prepare-dev-env: repo-render-env render-templates repo-ci-prepare-hooks
 ##[<] Dev Environment
 
 ##[>] Docs [genai-include]
-#[what] render *.ontoRepo.tpl onto the repo (makefile.agents.md, repo-structure.md, CLAUDE.md, AGENTS.md)
+#[what] render *.ontoRepo.tpl onto the repo (makefile.agents.md, repo-structure.md, CLAUDE.md, AGENTS.md, README.md)
 render-templates:
 	@che render-templates --profiles=ontoRepo
+
+#[what] render .env.tpl to .env: upstream refs and CI variables via glab, secrets via op
+repo-render-env:
+	@CHE_ENV_UNSET=empty che render-templates --profiles=envSeed
 ##[<] Docs
 
 ##[>] Release [genai-include]
 #[what] print the next semver tag inferred from the last tag..HEAD diff (override: `semver: major|minor|patch` commit token)
-semver-next:
+semver-next: render-templates
 	@ci/semver-bump.zsh
 
 #[what] mint and push the next semver tag (CI: authed via TAG_TOKEN)
-tag-mint:
+tag-mint: render-templates
 	@ci/tag-mint.zsh
 ##[<] Release
 

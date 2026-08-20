@@ -10,13 +10,7 @@ stages:
   - release
   - trigger
 
-#[why] all CI runs on the self-hosted GKE runners: no SaaS compute minutes remain. set once here so a
-#   new job inherits it instead of silently having no runner. gke-linux-amd64 resolves to the medium
-#   size, matching the SaaS runner it replaces
 default:
-  #[why] spot nodes are preempted mid-job and the manager itself runs on spot: infrastructure
-  #   failures are expected, not exceptional. 2 is gitlab's hard maximum, so 3 attempts in total.
-  #   retries cover runner and API faults only, never a failing script
   retry:
     max: 2
     when:
@@ -31,6 +25,8 @@ default:
 variables:
   ARTIFACT_REGISTRY: $GRP_KO_VAR_ARTIFACT_REGISTRY
   CI_IMAGES_REF: $GRP_KO_VAR_CI_IMAGES_REF
+  PROSE_SPEC_REF: $GRP_KO_VAR_PROSE_SPEC_REF
+  MISC_REF: $GRP_KO_VAR_MISC_REF
   CI_IMAGE: $ARTIFACT_REGISTRY/ci-linux:$CI_IMAGES_REF
 
 validate-pre-commit-all:
@@ -55,17 +51,16 @@ tag-mint:
   script:
     - make tag-mint
 
-trigger-control:
+trigger-automation:
   stage: trigger
   rules:
     - if: $CI_COMMIT_TAG =~ /^v[0-9]/
-  #[why] PROSE_TAG must be a yaml variable: forward:yaml_variables carries those, dotenv from needs is
-  #   job-scoped and never reaches the downstream. CI_COMMIT_TAG is predefined on tag pipelines, so no
-  #   upstream job is needed to produce it
   variables:
-    PROSE_TAG: $CI_COMMIT_TAG
+    RELEASE_TAG: $CI_COMMIT_TAG
+    PRODUCER: prose-assets
+    PRODUCER_ARTIFACT: cross-repo/prose/assets
   trigger:
-    project: konradodwrot/control
+    project: konradodwrot/cross-repo/automation
     branch: main
     forward:
       yaml_variables: true
