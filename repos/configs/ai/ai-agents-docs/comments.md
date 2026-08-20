@@ -30,7 +30,7 @@ Emit zero comments in AI-generated code: no explanatory, convention-label, heade
 
 🚫 NEVER clarify code with comments. ZERO. No field annotations, no allowed-value lists, no restating the line below. "Documents the API" is NOT permission for internal code: names and types ARE the docs. Unclear name → rename, NEVER annotate. Every clarifying comment is a defect: delete on sight.
 
-🚫 Labeled comments (`[why]`, `[what]`, `[where]`) are comments. The label notation defines HOW a requested comment is written, NEVER a license to write one. "This context matters", "future reader needs this", "non-obvious decision" → chat, commit message, or docs file. NEVER a comment. Nothing justifies an unrequested comment.
+🚫 Labeled comments (`[why]`, `[what]`, `[where]`) are comments. The label notation defines HOW a requested comment is written, NEVER a license to write one. "This context matters", "future reader needs this", "non-obvious decision" → chat, commit message, or docs file. Nothing justifies an unrequested comment.
 
 Before writing/editing ANY file, check for a comment: delete it, move to chat. Catch an added comment → remove immediately, unasked. Re-check your OWN output before finishing: any comment you emitted (except 🤖 marks) is a task failure, fix it before reporting done.
 
@@ -43,13 +43,9 @@ TWO exceptions to the ban, both mandatory:
 1. The 🤖 marking section above, never overridden by this rule.
 2. A docstring on every exported symbol, for an audience outside the code.
 
-Exported means the public interface others call: an exported Go symbol, a
-published module's API, a CLI entrypoint. Internal and unexported code gets
-nothing.
+Exported: the public interface others call (an exported Go symbol, a published module's API, a CLI entrypoint). Internal and unexported code gets nothing.
 
-State the symbol's purpose, briefly. One line where one line does. Never
-overexplain, never restate the signature, never narrate the body. Names and
-types still carry the detail: the docstring says what the symbol is for.
+State the purpose, briefly. One line where one line does. Never restate the signature or narrate the body. Names and types carry the detail, the docstring says what the symbol is for.
 
 ```go
 // Render applies the template at src and writes the result to dst.

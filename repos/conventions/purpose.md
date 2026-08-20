@@ -6,7 +6,7 @@ Retired home of repo conventions. They live in `prose/conventions/` now, authore
 
 ## Why It Exists
 
-Held the conventions before prose centralized workspace prose. Stays until every consumer is verified against prose, then archived or deleted.
+Held the conventions before prose centralized them. Stays until every consumer is verified against prose, then archived or deleted.
 
 ## Goals
 

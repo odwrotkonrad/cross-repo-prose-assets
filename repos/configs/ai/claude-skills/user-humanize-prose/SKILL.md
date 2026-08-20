@@ -14,23 +14,23 @@ Scope: `$scope` (empty → `diff-from-main`). Resolved target files:
 
 !`${CLAUDE_SKILL_DIR}/scripts/resolve-scope.sh $scope`
 
-`session` scope: rewrite prose you wrote this session (the last response, or the file the user points at). `selection` scope: rewrite the selected text, the IDE selection in context, or the text pasted with the command. If it comes from a file, edit that file in place, at the selection only. Any other scope: rewrite the prose files listed above (markdown, docs) and the comments in code files, skipping content-unchanged renames.
+`session`: rewrite prose you wrote this session (the last response, or the file the user points at). `selection`: rewrite the selected text (IDE selection in context, or text pasted with the command). From a file: edit that file in place, the selection only. Any other scope: rewrite the prose files listed above and the comments in code files, skipping content-unchanged renames.
 
-In code files, rewrite comment prose only, leave code untouched. Same rules for every comment kind (inline, block, doc comments, config annotations). Delete comments that restate the code or add nothing. Preserve comment notation: label prefixes (`[where]`, `[why]`, `[what]`), `[>]`/`[<]` section markers, 🤖 marks.
+In code files, touch comments only, every kind (inline, block, doc, config annotations). Delete comments that restate the code or add nothing. Preserve notation: label prefixes (`[where]`, `[why]`, `[what]`), `[>]`/`[<]` section markers, 🤖 marks.
 
 Rewrite each target in place, same medium.
 
 ## Instructions
 
-Rewrite aggressively. Never preserve wording, sentence order, or structure out of caution: if a sentence can be tighter, rewrite it. "Already decent" is not a reason to skip. Apply all of:
+Rewrite aggressively. Never keep wording, sentence order, or structure out of caution: if a sentence can be tighter, rewrite it. "Already decent" is no reason to skip. Apply all of:
 
 - Shorten. Cut filler, hedges, preamble, postamble, restated context. Keep only what changes what the reader does or knows.
-- Deduplicate. Cut points repeated in other words. Say it once, in the best spot.
-- Cut the obvious. Drop what the reader already knows or infers from context, the surrounding text, or competence in the field.
-- Tersify. Fewest words per sentence. Drop qualifiers ("quite", "essentially", "it's worth noting"). One idea per sentence.
-- Abrupt. Start with the point. No warm-ups, transitions, or recaps.
+- Deduplicate. Say each point once, in the best spot.
+- Cut the obvious. Drop what the reader knows or infers from context or competence in the field.
+- Tersify. Fewest words per sentence. No qualifiers ("quite", "essentially", "it's worth noting"). One idea per sentence.
+- Abrupt. Start with the point. No warm-ups, transitions, recaps.
 - Humanize. Kill AI tells: "delve", "leverage", "robust", "seamless", "comprehensive", "it's important to", bullet-mania, mirrored triads, em-dash chains, over-parallel structure. Vary sentence length. Write like a practitioner in a hurry, not a brochure.
-- Idiomatic. Use the field's standard terms, what a working engineer, ops person, or writer would actually say. Common name over invented paraphrase.
+- Idiomatic. The field's standard terms, what a working engineer, ops person, or writer would say. Common name over invented paraphrase.
 
 ## Constraints
 

@@ -1,6 +1,6 @@
 ## Tests
 
-Asked for tests: write unit tests, unless told otherwise.
+Asked for tests: unit tests, unless told otherwise.
 
 - Unit: a software deliverable (function, class, command, subcommand).
 - Process: a running instance of a program, as in OS nomenclature.

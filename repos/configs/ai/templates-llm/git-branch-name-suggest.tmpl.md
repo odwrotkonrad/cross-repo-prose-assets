@@ -4,14 +4,13 @@
 
 ## Task
 
-Suggest a branch name from the branch's recent commit messages. Fill `name`.
+Suggest a branch name from the branch's commit messages. Fill `name`.
 Terse, specific.
 
-- keep the current branch if it already fits the commits (~80%), rename only when it is clearly inaccurate
-- infer the name from the commit messages
+- keep the current branch if it fits the commits (~80%), rename only when clearly inaccurate
 - read `type(scope)` from the commit subjects
 - one scope: `<type>/<scope>-<desc>`, `<desc>` = 2-4 hyphenated words
-- many scopes: `<type>/<scope>-<scope>-...`, order by amount of changes (most first), no desc
+- many scopes: `<type>/<scope>-<scope>-...`, most changes first, no desc
 - lowercase, hyphenated, no spaces
 
 ## Examples
@@ -27,7 +26,7 @@ Terse, specific.
 ### Recent Commits (the branch's commit messages, subject + body)
 {{ . }}
 {{ end }}{{ if getenv "CURRENT_BRANCH" }}
-### Current Branch (keep it if it already fits the changes ~80%, only rename if clearly inaccurate)
+### Current Branch (keep if it fits ~80%, rename only if clearly inaccurate)
 {{ getenv "CURRENT_BRANCH" }}
 {{ end }}{{ with getenv "INSTRUCTIONS_RUNTIME" }}
 ## Important

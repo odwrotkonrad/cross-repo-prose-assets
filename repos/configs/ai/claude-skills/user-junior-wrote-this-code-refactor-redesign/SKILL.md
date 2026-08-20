@@ -11,44 +11,44 @@ arguments: [scope]
 
 Scope: `$scope`, required, one of:
 
-- `nontest`: all non-test code. Test code is read-only context: never edit, move, delete, or rename a test file, fixture, or spec. Adjust NOTHING under test trees. If a redesign breaks tests, change the production design and only then report which tests block it.
-- `test`: all test code (test files, fixtures, specs, harnesses). Non-test code is read-only context: never edit production code, not one line, not to "unblock" a test redesign. Report blockers instead.
+- `nontest`: all non-test code. Test code is read-only context: never edit, move, delete, or rename a test file, fixture, or spec. If a redesign breaks tests, change the production design, then report which tests block it.
+- `test`: all test code (test files, fixtures, specs, harnesses). Non-test code is read-only context: never edit production code, not one line, not to "unblock" a test redesign. Report blockers.
 
-Any other value, or empty: stop and ask for the scope.
+Any other value, or empty: stop and ask.
 
 ## Stance
 
 Assume a junior wrote every line in scope. Trust nothing:
 
-- Grill the design: every abstraction, layer, interface, dependency, and file split must justify its existence.
-- Everything is an option: merge modules, delete layers, invert dependencies, rewrite whole files, redraw package boundaries. Nothing is too dangerous.
-- Optimize for two outcomes, in order: less code, more readable code.
+- Grill the design: every abstraction, layer, interface, dependency, and file split justifies its existence or goes.
+- Everything is an option: merge modules, delete layers, invert dependencies, rewrite whole files, redraw package boundaries.
+- Optimize, in order: less code, more readable code.
 - Redesign for maintenance and extensibility: a newcomer extends the codebase without archaeology.
 
 ## Procedure
 
-1. Survey from high level: map the pieces in scope, how they connect, who calls what, where state lives, where duplication and dead weight sit.
-2. Judge the design: list what is over-built, under-built, misplaced, duplicated, or dead. Rank by payoff.
-3. Decide the target design: how the codebase should look for maintenance and extensibility, not how to minimally patch it.
-4. Plan the moves from current to target, ordered so the build and tests stay green between steps.
-5. Execute aggressively. Prefer deleting and rewriting over decorating.
-6. Re-run the survey on the result. Repeat until another pass would not shrink or clarify the code.
+1. Survey: map the pieces in scope, how they connect, who calls what, where state lives, where duplication and dead weight sit.
+2. Judge: list what is over-built, under-built, misplaced, duplicated, or dead. Rank by payoff.
+3. Decide the target design: how the codebase should look, not how to patch it.
+4. Plan the moves from current to target, ordered so build and tests stay green between steps.
+5. Execute. Delete and rewrite over decorate.
+6. Re-survey the result. Repeat until another pass would neither shrink nor clarify the code.
 
 ## Instructions
 
 Apply all of:
 
-- Cut code amount: delete dead code, collapse needless indirection, commonize duplication, replace hand-rolled mechanisms with the standard library.
-- Maximize readability: names carry the meaning, flat over nested, one obvious way per task, complex-reading code split into steps.
+- Cut code: delete dead code, collapse indirection, commonize duplication, replace hand-rolled mechanisms with the standard library.
+- Maximize readability: names carry the meaning, flat over nested, one obvious way per task, hard-to-read code split into steps.
 - Idiomatic, modern syntax of the target language.
-- Restructure files and packages so related code lives together and each piece has one reason to change.
-- Keep public behavior identical unless the user approved a change: same inputs, same outputs, same side effects.
+- Restructure files and packages: related code together, one reason to change per piece.
+- Public behavior identical unless the user approved a change: same inputs, outputs, side effects.
 
 ## Constraints
 
-- Hard scope wall: `nontest` touches zero test code, `test` touches zero non-test code. No exceptions.
-- Keep existing comment notation intact: label prefixes (`[where]`, `[why]`, `[what]`), `[>]`/`[<]` section markers, 🤖 marks. Add no new comments.
-- Verify continuously: build, lint, and full test suite after every plan step, green before the next one.
+- Hard scope wall: `nontest` touches zero test code, `test` zero non-test code. No exceptions.
+- Keep comment notation: label prefixes (`[where]`, `[why]`, `[what]`), `[>]`/`[<]` section markers, 🤖 marks. Add no new comments.
+- Build, lint, full test suite after every plan step, green before the next.
 
 ## Bugs
 

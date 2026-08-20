@@ -24,23 +24,23 @@ Lang: `$lang` (empty → none). When set, apply these design principles to every
 
 ## Procedure
 
-1. Read the targets whole. Understand every symbol and every comment. Clarifying comments are evidence: each marks a spot where the code failed to speak for itself.
-2. Fold that understanding back into the code:
-   - Rename. Give each symbol a name carrying what the comment had to explain: pack max info, `noun_noun_verb`, max 3 parts.
-   - Use conventional names, aggressively: industry-standard nomenclature over invented terms (`src`/`dst`, `count`, `path`, `parse`, `render`). Hunt coined terms, replace each with the standard equivalent everywhere it appears. Minimize the vocabulary: one word per concept across all symbols, never synonyms.
-   - Rearrange. Order and group code so it reads top-down: intent first, detail below, related things adjacent.
-   - Reduce comments. Once a name or structure says it, delete the comment. Keep only what code cannot express.
-3. Re-read as a first-time reader. Any spot needing a comment or a pause to decode: rename or rearrange again.
+1. Read the targets whole. Understand every symbol and comment. Each clarifying comment marks a spot where the code failed to speak for itself.
+2. Fold that understanding into the code:
+   - Rename. Each name carries what the comment had to explain: max info, `noun_noun_verb`, max 3 parts.
+   - Standard names over coined ones (`src`/`dst`, `count`, `path`, `parse`, `render`). Replace every coined term with its standard equivalent wherever it appears. One word per concept across all symbols, no synonyms.
+   - Rearrange. Top-down order: intent first, detail below, related things adjacent.
+   - Cut comments. Once a name or structure says it, delete the comment. Keep only what code cannot express.
+3. Re-read as a first-time reader. Any spot that needs a comment or a pause: rename or rearrange again.
 
-Goal: reading the code is a pleasure. Every piece is understood from its name and position alone.
+Goal: every piece understood from its name and position alone.
 
 ## Constraints
 
-Preserve behavior: same inputs, same outputs, same side effects.
+Preserve behavior: same inputs, outputs, side effects.
 
-Keep existing comment notation intact where a comment survives: label prefixes (`[where]`, `[why]`, `[what]`), `[>]`/`[<]` section markers, 🤖 marks. Add no new comments.
+Surviving comments keep their notation: label prefixes (`[where]`, `[why]`, `[what]`), `[>]`/`[<]` section markers, 🤖 marks. Add no new comments.
 
-If tests cover a target, run them after changes.
+Run the tests covering a target after changing it.
 
 ## Bugs
 

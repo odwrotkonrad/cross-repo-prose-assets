@@ -4,9 +4,9 @@ Retired. Repo conventions live in [prose](https://gitlab.com/konradodwrot/prose)
 
 ## Purpose
 
-Held the workspace conventions before prose centralized all workspace prose. Nothing is authored here anymore. Content moved to `prose/conventions/`, versioned there, consumed by downstream repos at pinned versions (`@gitlab.com/konradodwrot/prose//<path>?ref=vX.Y.Z`).
+Held the workspace conventions before prose centralized them. Nothing is authored here. Content lives in `prose/conventions/`, versioned there, consumed by downstream repos at pinned versions (`@gitlab.com/konradodwrot/prose//<path>?ref=vX.Y.Z`).
 
-This repo stays until every consumer is verified against prose, then archived or deleted.
+Stays until every consumer is verified against prose, then archived or deleted.
 
 ## Conventions
 

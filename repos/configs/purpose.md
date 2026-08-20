@@ -6,7 +6,7 @@ Git-tracked dotfiles extended into root OS space: every option explicit, plus sc
 
 ## Why It Exists
 
-Records a system's stateful configuration for reading and later reference, not for frequent software updates. Explicit configuration, modifications separated from defaults, annotated choices.
+Records a system's stateful configuration for reading and reference, not for frequent software updates. Explicit options, modifications separated from defaults, annotated choices.
 
 ## Goals
 

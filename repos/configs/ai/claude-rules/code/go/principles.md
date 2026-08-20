@@ -4,7 +4,7 @@
 
 - Clear is better than clever. Reflection is never clear.
 - Readable at scale beats concise: code is read far more than written.
-- Least mechanism: language construct, then stdlib, then internal lib, in that order.
+- Least mechanism: language construct, then stdlib, then internal lib.
 
 ### Interfaces
 

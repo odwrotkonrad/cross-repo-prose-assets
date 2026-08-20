@@ -14,8 +14,8 @@ chains to the `infra/sandbox` image, which owns its own bake.
 
 Every repo's CI ran the same bootstrap: pull a golang base, `apt-get`
 clang/make/zsh, `go install che@latest` and `lefthook@latest`. Compiling che
-(1Password CGO SDK, tree-sitter) cost ~4-5 min per pipeline. Bake the toolchain
-once, and that becomes a cached image pull.
+(1Password CGO SDK, tree-sitter) cost ~4-5 min per pipeline. Baked once, that
+is a cached image pull.
 
 ## Goals
 

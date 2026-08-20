@@ -13,7 +13,7 @@ paths:
 
 ### Operations
 
-- Write upsert, idempotent operations: re-running yields the same end state.
+- Write idempotent (upsert) operations: re-running yields the same state.
 
 ### Documentation
 
@@ -29,7 +29,7 @@ paths:
 
 - Use the runtime's modern, concise syntax.
 - Keep code short.
-- Split complex-reading code into steps.
+- Split hard-to-read code into steps.
 
 ### Structure
 

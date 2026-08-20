@@ -15,8 +15,8 @@ paths:
 
 ### Typing
 
-- Type every function arg and return with defined types.
-- Declare semantic types: `type X = base`, named after the base type (`SecretStr`).
+- Type every arg and return.
+- Declare semantic types as `type X = base`, suffixed with the base (`SecretStr`).
 - Explain a semantic type with a trailing `"""..."""` (IntelliSense-visible), not `#`.
 
 ```python
@@ -32,7 +32,7 @@ type OPRequestTimeoutInt = int
 - Docstring every exported symbol (a public module's API, a CLI entrypoint). Private helpers get none.
 - *What* goes in the docstring `"""..."""`, briefly. Never restate the signature.
 - *Why* goes above the function, only when non-obvious and explicitly asked.
-- Trace the input-to-output path as a numbered list, only when the path is non-obvious.
+- Number the input-to-output steps, only when the path is non-obvious.
 - List non-obvious, unavoidable external interfaces (filesystem, network, `op read`, URL) under `Interfaces with:`. Omit `stdio`.
 
 ```python
