@@ -1,10 +1,11 @@
 ##[>] 🤖🤖
 upstream:
-  - infra/oci-images/ci-linux
-  - infra/iac/ci-var/artifact-registry
-  - infra/iac/ci-var/ci-images-ref
+  - cross-repo/infra/oci-images/ci-linux
+  - cross-repo/infra/iac/ci-var/artifact-registry
+  - cross-repo/infra/iac/ci-var/ci-images-ref
+  - cross-repo/prose/spec/conventions-doc
+  - cross-repo/misc/ci-scripts
 downstream:
-  - {name: conventions-doc, type: ai-prose}
   - {name: repo-prose, type: ai-prose}
   - {name: shared-prose, type: ai-prose}
   - {name: doc-templates, type: ai-prose}
