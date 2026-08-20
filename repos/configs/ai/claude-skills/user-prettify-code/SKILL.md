@@ -28,27 +28,27 @@ Top-down, recursive:
 
 1. Look at the targets from high level: file structure, module boundaries, how pieces relate.
 2. Plan: what to restructure, what to touch per file, in what order.
-3. Execute the plan.
-4. Repeat look-plan-execute on smaller pieces (a file, a function cluster) as needed.
+3. Execute.
+4. Repeat on smaller pieces (a file, a function cluster) as needed.
 
 ## Instructions
 
 Apply all of:
 
-- Reduce complexity. Flatten nesting, split complex-reading code into steps, drop needless indirection.
+- Reduce complexity. Flatten nesting, split hard-to-read code into steps, drop needless indirection.
 - Remove antipatterns.
-- Idiomatic. Write what a fluent practitioner of the target language would write: standard library over hand-rolled, the language's native constructs and conventions.
-- Modern syntax. Use the runtime's modern, concise syntax.
-- Commonize. Extract repeated code into one shared function, constant, or structure.
+- Idiomatic. What a fluent practitioner of the language would write: standard library over hand-rolled, native constructs and conventions.
+- Modern, concise syntax of the runtime.
+- Commonize. Repeated code becomes one shared function, constant, or structure.
 - Remove dead code: unused functions, variables, imports, branches, commented-out code.
 
 ## Constraints
 
-Preserve behavior: same inputs, same outputs, same side effects. Never trade correctness for elegance.
+Preserve behavior: same inputs, outputs, side effects. Never trade correctness for elegance.
 
-Keep existing comment notation intact: label prefixes (`[where]`, `[why]`, `[what]`), `[>]`/`[<]` section markers, 🤖 marks. Add no new comments.
+Keep comment notation: label prefixes (`[where]`, `[why]`, `[what]`), `[>]`/`[<]` section markers, 🤖 marks. Add no new comments.
 
-If tests cover a target, run them after changes.
+Run the tests covering a target after changing it.
 
 ## Bugs
 

@@ -4,11 +4,11 @@ Centralized prose: conventions, purpose docs, README sources, specs, shared doc 
 
 ## Purpose
 
-Prose used to live scattered across repos. This is its one semver-tagged home. Downstream repos own assembly: their che renderTemplates pull these artifacts at a pinned version.
+One semver-tagged home for prose that used to live scattered across repos. Downstream repos own assembly: their che renderTemplates pull these artifacts at a pinned version.
 
-Every merge to main mints the next `vX.Y.Z` tag. `ci/semver-bump.zsh` bumps the patch: prose grows by adding files, so an add is not a release event. A `semver: major|minor|patch` commit token lifts it above patch. The tag pipeline triggers [control](https://gitlab.com/konradodwrot/control), which propagates the release to affected downstreams as regen MRs.
+Every merge to main mints the next `vX.Y.Z` tag. `ci/semver-bump.zsh` bumps the patch by default: prose grows by adding files, and an add is not a release event. A `semver: major|minor|patch` commit token lifts it. The tag pipeline triggers [control](https://gitlab.com/konradodwrot/control), which fans the release out to affected downstreams as regen MRs.
 
-`make render-templates` regenerates this repo's own docs via che. Prose may also join pieces into a combined artifact. Downstream still decides where it lands.
+`make render-templates` regenerates this repo's own docs via che. Prose may pre-assemble pieces into one artifact. Downstream still decides where it lands.
 
 ## Layout
 

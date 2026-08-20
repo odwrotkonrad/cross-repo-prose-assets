@@ -2,14 +2,14 @@
 
 ## What It Is
 
-Shared library for the sibling CLI modules: `yamlcfg` (system + user YAML
-loading, deep-merge, XDG fallback, `CodedError` exit codes), `climain`
-(`-h/--help`, `-v/--version` dispatch, coded-exit epilogue). No binaries.
+Shared library for the sibling CLIs: `yamlcfg` (system + user YAML loading,
+deep-merge, XDG fallback, `CodedError` exit codes), `climain` (`-h/--help`,
+`-v/--version` dispatch, coded-exit epilogue). No binaries.
 
 ## Why It Exists
 
-`get-os-open-files-with` and `get-term-open-files-with` each carried a
-byte-identical config loader and main-shape boilerplate.
+`get-os-open-files-with` and `get-term-open-files-with` carried byte-identical
+config loaders and main boilerplate.
 
 ## Goals
 

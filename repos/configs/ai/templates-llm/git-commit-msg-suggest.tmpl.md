@@ -19,8 +19,8 @@ them in the subject or description.
 
 Write a commit message from the staged diff. Fill `subject` and `description`.
 Terse, specific, exhaustive: every change appears, trim words, never changes.
-Cut every point to one line. Drop nothing, restate nothing.
-State what changed. Never why. Never explain, justify, or guess. Only what the diff shows.
+One line per point. Drop nothing, restate nothing.
+What changed, never why. Never explain, justify, or guess. Only what the diff shows.
 
 `subject` → `<type>(<scope>): <summary>`:
 - imperative, lowercase, <=72 chars, no trailing period
@@ -29,8 +29,8 @@ State what changed. Never why. Never explain, justify, or guess. Only what the d
 
 `description` → the body:
 - what each change does, concretely. wrap ~72 cols, flag breaking changes
-- multi-area change → group under an `area:` heading per area
-- big area carrying several features → subgroup under a `<feature>:` line per feature within the area
+- multi-area change → an `area:` heading per area
+- big area with several features → a `<feature>:` line per feature within the area
 
 ## Examples
 

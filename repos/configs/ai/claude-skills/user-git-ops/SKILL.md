@@ -5,8 +5,8 @@ description: Run a git op via a detached self-contained wrapper (branch, commit,
 
 ## /user-git-ops Steps
 
-Map the request to one op, then run it detached (logic + LLM text live in the
-wrapper, tail `~/.local/state/git-wrappers/<wrapper>.log` if needed):
+Map the request to one op, run it detached. Git logic and LLM text live in the
+wrapper, logs in `~/.local/state/git-wrappers/<wrapper>.log`:
 
 - branch / rename / name        → `$ git-branch-name-upsert.zsh &`
 - commit (append `amend` arg)    → `$ git-commit-upsert.zsh [amend] &`

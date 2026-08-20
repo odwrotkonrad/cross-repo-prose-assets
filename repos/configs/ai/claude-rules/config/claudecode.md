@@ -47,8 +47,11 @@ root/_home/.config/claude/:
       go/:
         principles.md:
       python/:
+        principles.md:
         python.md:
         scripts.md:
+      ruby/:
+        principles.md:
       zsh/:
         zsh.md:
     config/:
@@ -67,7 +70,7 @@ root/_home/.config/claude/:
     marketplaces/:
 ```
 
-Global instructions (`~/.config/claude/CLAUDE.md`) sit outside this tree, rendered onto the host from `root/_home/.config/ai-agents/templates/AGENTS.md.ontoHost.tpl` (llm/base profile). They `@`-include `~/.config/ai-agents/docs/`: `comments.md`, `git.md`, `testing.md`.
+Global instructions (`~/.config/claude/CLAUDE.md`) sit outside this tree, rendered from `root/_home/.config/ai-agents/templates/AGENTS.md.ontoHost.tpl` (llm/base profile). They `@`-include `~/.config/ai-agents/docs/` (`comments.md`, `git.md`, `testing.md`).
 
 Project instructions live in `<repo>/.claude/` (preferred) or `<repo>/CLAUDE.md`.
 

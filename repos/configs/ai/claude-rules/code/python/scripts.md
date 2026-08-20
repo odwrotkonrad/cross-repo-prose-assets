@@ -31,7 +31,7 @@ paths:
   - `Input(lib_input.BaseInput)`: set `PARAMS` (and `CONFIG`) ClassVars and matching `params`/`config` fields. Set `ARGUMENTS` on a `Parameters` with positional args.
 - Keep `Config.data` a plain typed field (`dict[...]` or `BaseModel`), never `RootModel`. Attribute access (`config.data.field`), pass `config.data` to handlers.
 - Validate natively: `Input.validate_input(argv)` → `(input, error)`. Builds `params` (`from_argv` resolves action, shapes fields) and `config`.
-- Validate and prepare with pydantic validators. Reject by raising domain `err.Error` (subclasses `Exception`, propagates unwrapped). `validate_input` catches it (stray `ValidationError` → `Errors.ARGS`), keeping the rest exception-free.
+- Validate and prepare with pydantic validators. Reject by raising `lib_err.Error` (subclasses `Exception`, propagates unwrapped). `validate_input` catches it (stray `ValidationError` → `Errors.ARGS`), the rest stays exception-free.
 - Declare unused slots as `None` (no `Options` for flag-less, no `Config` for config-less).
 - Let handlers return results directly, no `Output` model.
 
@@ -41,7 +41,7 @@ paths:
 - Reuse `1x` lib codes from `root_scripts_lib/errors.py`: `Errors.ARGS`, `Errors.CONFIG`, `Errors.FILE_NOT_FOUND`, `Errors.NETWORK`.
 - Define domain errors in the `2x` band, numbering each script from `21`.
 - Declare a local `Errors(lib_err.Errors)`: add `2x` codes, extend `MESSAGES` as `lib_err.Errors.MESSAGES | {domain codes}` (own entries win), keep `lib_err.Errors.MESSAGES` untouched.
-- Return an `Error` (code plus context, e.g. `{path}`) alongside output, from where the failure is detected. `main` propagates it to the gate, which resolves it via `Errors.message(error)`.
+- Return an `Error` (code plus context, e.g. `{path}`) alongside output, from where the failure is detected. `main` passes it to the gate, which renders it via `Errors.message(error)`.
 - Call `sys.exit` only in the `__main__` gate.
 
 ### Structure
@@ -77,7 +77,7 @@ Examples:
     $ get --help
 
 Upstream Interfaces with:
-- `$ export` — intended consumer of the printed value
+- `$ export`: consumer of the printed value
 
 Downstream Interfaces with:
 - files: entries.yml (system + user)
@@ -164,7 +164,7 @@ def get(
 
 ##[>] main
 def main(input: Input) -> tuple[str | None, lib_err.Error | None]:
-    """[what] Dispatch the resolved action to its handler."""
+    """Dispatch the resolved action to its handler."""
     match input.params.action:
         case Action.USAGE:
             return lib_input.usage(__doc__), None
@@ -186,7 +186,7 @@ if __name__ == "__main__":
 ## Testing
 
 - Test every script under `tests/scripts/python/<script-name>/`.
-- Declare cases as data in a sibling `cases.yml`, never in the test body: `name`, `input`/`args`, expected `exit`, expected `stdout` (fixture filename) or `stderr`.
+- Declare cases as data in a sibling `cases.yml`, never in the test body: `name`, `input`/`args`, expected `exit`, `stdout` (fixture filename) or `stderr`.
 - Group cases into `##[>] positive` / `##[>] error` sections.
 - Load with `load_cases`, drive one parametrized `test_case` via `@cases(...)` (ids from `name`).
 - Reuse `root_scripts_test_lib`: `load_cases`/`cases`, `run`, `match_line`.

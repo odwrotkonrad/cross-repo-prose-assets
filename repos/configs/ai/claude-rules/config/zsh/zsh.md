@@ -112,14 +112,14 @@ paths:
 | - | ${ZDOTDIR}/.zlogout           | login shell exit (1st)  |
 | - | /etc/zlogout                  | login shell exit (2nd)  |
 
-Each phase has a `<phase>.d/` holding `functions/` (autoloaded onto `fpath`) and `auto.d/` (sourced recursively in path name order, one subdir per profile: `auto.d/00-base/`, `auto.d/extras/`). `/etc/zshenv` loads `zshenv.d/` (all shells), `/etc/zshrc` loads `zshrc.d/` (interactive). User space splits the same way. Put always-available helpers in `zshenv.d/`, interactive-only ones in `zshrc.d/`.
+Each phase has a `<phase>.d/` holding `functions/` (autoloaded onto `fpath`) and `auto.d/` (sourced recursively in path order, one subdir per profile: `auto.d/00-base/`, `auto.d/extras/`). `/etc/zshenv` loads `zshenv.d/` (all shells), `/etc/zshrc` loads `zshrc.d/` (interactive). User space splits the same way. Always-available helpers go in `zshenv.d/`, interactive-only ones in `zshrc.d/`.
 
 ### Documentation
 
 `$ man`:
 
 - `zshzle`: line editor, keymaps, widgets, bindkey, highlighting
-- `zshall`: all-in-one, concatenation, searchable, every section, other zsh pages
+- `zshall`: every zsh page concatenated, searchable
 - `zshparam`: parameters, arrays, positional, scalars, shell variables
 - `zshoptions`: setopt, completion, globbing, history, emulation
 - `zshbuiltins`: builtin commands, autoload, setopt, zstyle, bindkey
