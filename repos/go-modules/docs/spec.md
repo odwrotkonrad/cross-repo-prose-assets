@@ -125,15 +125,22 @@ Spec-wide defaults and che knobs:
   against it. Home targeting is explicit via a `$HOME` dest rewrite, with no
   implicit `_home/` folder mapping. che.yml lookup, scripts, and repo-doc
   template sources (repo dest) stay at the checkout.
-- `validateSpec` (`warn` | `error`): top-level only, flag and env override.
+- `validateSpec` (`warn` - `envUnset` (`error` | `empty`): what a bare `${{ env.NAME }}` does when
+  `NAME` is unset or empty, see [Interpolation](#interpolation). Top-level
+  only, literal only (read before interpolation), `--env-unset` and
+  `CHE_ENV_UNSET` override. Default `error`.
+| `error`): top-level only, flag and env override.
 - `dryRun` (`delta` | `all` | `true` | `false`): default dry-run mode (`true`
   aliases `delta`, `false` the default), flag and env override.
 - `profiles` (string list): profiles to run (autoDiscover skipped, runIf still
   enforced), `--profiles` and `CHE_PROFILE` override.
 - `skipRemoteRefs` (bool): skip sourced `include.profiles` refs, flag and env
   override.
-- `renderTemplates.skipSecrets` (bool): skip `op://` (1Password) and `gcp://`
-  (GCP Secret Manager) resolution (placeholders), flag and env override.
+- `renderTemplates.skipSecrets` (bool): skip templates carrying `op://`
+  (1Password) or `gcp://` (GCP Secret Manager) refs, flag and env override.
+- `renderTemplates.skipVariables` (bool): skip templates carrying a `shell`
+  call, flag and env override. Independent of `skipSecrets`: a template with
+  both is skipped when either is on.
 <!-- [>] 🤖 -->
 - `skipOps` (op-name list): ops skipped everywhere: dropped from the run
   sequence, direct op subcommands become logged no-ops. `--skip-ops` and
@@ -162,7 +169,10 @@ as a bare object, without the `options:` wrapper. `runIf` and
 
 ### env
 
-`KEY: value` map exported around this spec's preparation and execution.
+`KEY: value` map exported around this spec's preparation and execution. Values
+may interpolate `${{ env.NAME }}` from the launch env (`.env`, process, a
+sourcing ref's `env:`), never from sibling keys. The block then feeds the rest
+of the file's interpolation.
 
 ### include
 
@@ -172,6 +182,49 @@ together. Each entry is a `<dir>` (absolute, relative, `~/`, `$VAR`) or
 keeps its own anchor, env, and profile eligibility, and its profile names become
 referenceable from this spec's `include.profiles` (bare-name collision errors).
 Duplicates and cycles load once. Recursive.
+
+## Interpolation
+
+Any string value in any che.yml (local, included, sourced) may carry
+`${{ env.NAME }}` or `${{ env.NAME || default }}`. Mapping keys (profile names)
+stay literal. Substituted values stay strings.
+
+```yaml
+env:
+  TREE: ${{ env.BASE_TREE || root }}
+web:
+  options: {profileWorkingDirectory: '${{ env.TREE }}'}
+  include:
+    profiles:
+      - source: '@gitlab.com/org/shared//che.yml::app?ref=${{ env.SHARED_REF }}'
+        env: {APP_NAME: web}
+```
+
+- `NAME` matches `[A-Za-z_][A-Za-z0-9_]*`, whitespace inside `${{ }}` is
+  insignificant. Anything short of the full form passes through untouched,
+  including the `$VAR` dest expansion.
+- The default is literal: everything after the first `||` up to `}}`, trimmed,
+  never itself interpolated. A defaulted ref never errors.
+- Unset means absent or empty.
+- Lookup, most specific last: `.env` beside the root che.yml < process env <
+  this spec's own `env:` < the sourcing ref's `env:`. A shell export always
+  beats `.env`.
+- A bare ref on an unset var follows `options.envUnset`. Under `error` (the
+  default) the load fails only for profiles selected to run (`--profiles`,
+  auto-discovery, sourced refs): a profile skipped by selection or `runIf`
+  never demands its vars. Top-level keys (`env:`, `options:`, `include:`) are
+  always strict. Every unset ref of a spec reports in one error, each with its
+  YAML path. Under `empty` the ref reads as `""`.
+- `che discover-profiles` never fails on unset refs. It lists every ref per
+  spec, its default if any, and whether it is set and from which source, and
+  skips profiles whose refs are unset.
+
+### .env
+
+che reads `.env` beside the root che.yml (dotenv syntax, `export` prefix
+tolerated, missing file fine) beneath the process env. A value exported in the
+shell wins over the file's. Only the root spec's `.env` is read, never a
+remote spec's.
 
 ## Profile Block
 
@@ -335,7 +388,8 @@ include:
   nested wins.
 - `env`: exported around everything done for the referenced profile,
   `options.source` entries only. The referenced spec's `env:` merges under it,
-  entry wins.
+  entry wins, at load too: the referenced spec's own `${{ env.NAME }}` refs see
+  the entry's values.
 
 Sourced refs resolve recursively, their own `include.sources` and sourced refs
 included, deduped by source plus profile, cycle-guarded. `--skip-remote-refs`
@@ -392,7 +446,14 @@ makeCopies:
 ### renderTemplates
 
 A tree of `*.tpl` sources rendered through gomplate, with `op://` (1Password) and
-`gcp://` (GCP Secret Manager) refs resolved at render time. Dest path decides
+`gcp://` (GCP Secret Manager) refs resolved at render time. The profile's
+effective env (launch env, spec `env:`, ref `env:`) is exported to the process
+around each profile's ops, so `env.Getenv "NAME"` in a template reads it.
+`{{ shell "<command>" }}` runs the command with `-c` under the user's shell
+(`$SHELL`, else the account's login shell, else `sh`), in the repo root with the
+process env, and substitutes its stdout with the trailing newline trimmed. A
+non-zero exit fails the render naming the template, the command and its stderr.
+Dest path decides
 target: relative -> repo, `~/` or absolute -> host. Source anchors by dest kind.
 Host sources (glob form, derived dest, or any `~/`/absolute dest) and repo-doc
 sources (repo dest) are both profileWorkingDirectory-relative. Glob and
