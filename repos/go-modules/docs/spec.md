@@ -126,7 +126,7 @@ Spec-wide defaults and che knobs:
   mapping. che.yml lookup, scripts, and repo-doc template sources (repo dest)
   stay at the checkout.
 - `validateSpec` (`warn` | `error`): top-level only, flag and env override.
-- `envUnset` (`error` | `empty`): what a bare `${{ env.NAME }}` does when
+- `envUnset` (`error` | `empty`): what a bare `{{ "${{" }} env.NAME }}` does when
   `NAME` is unset or empty, see [Interpolation](#interpolation). Top-level
   only, literal only (read before interpolation), `--env-unset` and
   `CHE_ENV_UNSET` override. Default `error`.
@@ -170,7 +170,7 @@ as a bare object, without the `options:` wrapper. `runIf` and
 ### env
 
 `KEY: value` map exported around this spec's preparation and execution. Values
-may interpolate `${{ env.NAME }}` from the launch env (`.env`, process, a
+may interpolate `{{ "${{" }} env.NAME }}` from the launch env (`.env`, process, a
 sourcing ref's `env:`), never from sibling keys. The block then feeds the rest
 of the file's interpolation.
 
@@ -186,21 +186,21 @@ once. Recursive.
 ## Interpolation
 
 Any string value in any che.yml (local, included, sourced) may carry
-`${{ env.NAME }}` or `${{ env.NAME || default }}`. Mapping keys (profile names)
+`{{ "${{" }} env.NAME }}` or `{{ "${{" }} env.NAME || default }}`. Mapping keys (profile names)
 stay literal. Substituted values stay strings.
 
 ```yaml
 env:
-  TREE: ${{ env.BASE_TREE || root }}
+  TREE: {{ "${{" }} env.BASE_TREE || root }}
 web:
-  options: {profileWorkingDirectory: '${{ env.TREE }}'}
+  options: {profileWorkingDirectory: '{{ "${{" }} env.TREE }}'}
   include:
     profiles:
-      - source: '@gitlab.com/org/shared//che.yml::app?ref=${{ env.SHARED_REF }}'
+      - source: '@gitlab.com/org/shared//che.yml::app?ref={{ "${{" }} env.SHARED_REF }}'
         env: {APP_NAME: web}
 ```
 
-- `NAME` matches `[A-Za-z_][A-Za-z0-9_]*`, whitespace inside `${{ }}` is
+- `NAME` matches `[A-Za-z_][A-Za-z0-9_]*`, whitespace inside `{{ "${{" }} }}` is
   insignificant. Anything short of the full form passes through untouched,
   `$VAR` dest expansion included.
 - The default is literal: everything after the first `||` up to `}}`, trimmed,
@@ -382,7 +382,7 @@ include:
   nested wins.
 - `env`: exported around everything done for the referenced profile,
   `options.source` entries only. The referenced spec's `env:` merges under it,
-  entry wins, at load too: the referenced spec's own `${{ env.NAME }}` refs see
+  entry wins, at load too: the referenced spec's own `{{ "${{" }} env.NAME }}` refs see
   the entry's values.
 
 Sourced refs resolve recursively, their own `include.sources` and sourced refs
@@ -443,7 +443,7 @@ A tree of `*.tpl` sources rendered through gomplate, `op://` (1Password) and
 `gcp://` (GCP Secret Manager) refs resolved at render time. The profile's
 effective env (launch env, spec `env:`, ref `env:`) is exported around each
 profile's ops, so `env.Getenv "NAME"` in a template reads it.
-`{{ shell "<command>" }}` runs the command with `-c` under the user's shell
+`{{ "{{" }} shell "<command>" }}` runs the command with `-c` under the user's shell
 (`$SHELL`, else the login shell, else `sh`), in the repo root with the process
 env, and substitutes its stdout, trailing newline trimmed. Non-zero exit fails
 the render, naming the template, command and stderr. Dest path decides the
