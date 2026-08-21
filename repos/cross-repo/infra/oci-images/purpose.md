@@ -7,8 +7,9 @@ manifest (amd64 native, arm64 qemu-emulated) in this project's container
 registry. `ci-linux`: `debian:bookworm-slim` plus the shared CI toolchain (go,
 che, lefthook, yq, zsh, ruby, clang, make, git, zig, goreleaser, golangci-lint,
 terraform, glab, op). `ci-linux-dind`: ci-linux plus the static docker CLI for
-docker-in-docker jobs. A che release (go-modules main) rebuilds here, then
-chains to the `ai-sandbox` image, which owns its own bake.
+docker-in-docker jobs. A che release (go-modules main) rebuilds here. Each
+release reaches `cross-repo/automation` as an event, which raises
+`CI_IMAGES_REF` in iac.
 
 ## Why It Exists
 
@@ -24,4 +25,4 @@ is a cached image pull.
 - Tool versions pinned in `ci/tool-versions.env`.
 - Public-pullable: cross-project pulls need no auth.
 - No per-job che compile, no per-job tool downloads.
-- Che releases propagate: rebuild here, re-bake the sandbox image.
+- Che releases propagate: rebuild here, publish the pin through automation.

@@ -16,7 +16,7 @@ Each repo declares its own surface in `.repo/cross-repo-interface.yml`: `upstrea
 
 Every sender reaches this repo through `cross-repo/misc`'s `TriggerAutomation` CI template, forwarding one JSON `AUTOMATION_EVENT` (`type`, `source`, `details`). `dispatch-event` runs `bin/automation dispatch`, a Ruby dispatcher picking a handler by `type` and emitting the regen child pipeline (`lib/automation/`, minitest under `test/`, `make test`):
 
-- `release.published` (`details: producer, artifact, tag`): one pin regen against `cross-repo/infra/iac`, raising the producer's tfvars line.
+- `release.published` (`details: producer, artifact`, the tag is `source.ref`): one pin regen against `cross-repo/infra/iac`, raising the producer's tfvars line.
 - `ci-var.changed` (`details: variables: [{key, from, to}]`, sent by iac's main apply): one content regen per consumer of each changed `GRP_KO_VAR_*` variable's producer, rendered at the new value.
 
 An unknown `type` fails the dispatch. `bin/automation graph affected|produces|consumes <vertex>` answers the graph queries.

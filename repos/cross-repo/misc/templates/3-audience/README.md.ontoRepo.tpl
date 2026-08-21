@@ -35,7 +35,7 @@ trigger-automation:
     - if: $CI_COMMIT_TAG =~ /^v[0-9]/
   variables:
     EVENT_TYPE: release.published
-    EVENT_DETAILS: '{"producer":"misc","artifact":"cross-repo/misc","tag":"$CI_COMMIT_TAG"}'
+    EVENT_DETAILS: '{"producer":"misc","artifact":"cross-repo/misc"}'
 ```
 
 Details computed by a script ride a dotenv report the trigger job `needs:`. This repo includes the template with `local:`.
