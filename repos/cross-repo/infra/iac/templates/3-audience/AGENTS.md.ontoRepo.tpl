@@ -8,8 +8,7 @@ The `konradodwrot` group tree and the identities it holds, as Terraform.
 
 ## Specs Before Implementation
 
-This repo's behavior specs live in the prose repo:
-`prose/repos/infra/iac/spec/`. Two forms sharing a stem: `<feature>.story.md`
+This repo's behavior specs live in the spec repo (`cross-repo/prose/spec`): `repos/cross-repo/infra/iac/spec/`. Two forms sharing a stem: `<feature>.story.md`
 user stories by default, `<feature>.scenarios.md` Gherkin only for
 automation-bound behavior. Functionality added / modified / removed → edit
 those specs FIRST, then implement, then set each touched status. Status closes
