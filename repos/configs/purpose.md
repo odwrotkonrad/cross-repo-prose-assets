@@ -2,7 +2,7 @@
 
 ## What It Is
 
-Git-tracked dotfiles extended into root OS space: every option explicit, plus scripts and an observability stack. Che loads one `root/` tree onto the host: symlinked by default, `.ontoHost.cp` copied, `*.ontoHost.tpl` rendered. Repo docs, the license, and the AI prose payloads (agent rules, skills, output styles, snippets) render from the prose repo at a pinned version. Only the local `.env` seed renders from a repo-local template.
+Git-tracked dotfiles extended into root OS space: every option explicit, plus scripts and an observability stack. Che loads one `root/` tree onto the host: symlinked by default, `.ontoHost.cp` copied, `*.ontoHost.tpl` rendered. Repo docs, the license, and the AI prose payloads (agent rules, skills, output styles, snippets) render from `cross-repo/prose/assets` at a pinned version. Only the local `.env` seed renders from a repo-local template.
 
 ## Why It Exists
 
