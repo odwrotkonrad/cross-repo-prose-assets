@@ -70,7 +70,7 @@ root/_home/.config/claude/:
     marketplaces/:
 ```
 
-Global instructions (`~/.config/claude/CLAUDE.md`) sit outside this tree, rendered from `root/_home/.config/ai-agents/templates/AGENTS.md.ontoHost.tpl` (llm/base profile). They `@`-include `~/.config/ai-agents/docs/` (`comments.md`, `git.md`, `testing.md`).
+Global instructions (`~/.config/claude/CLAUDE.md`) sit outside this tree, rendered by the llm/base profile from prose/assets `repos/configs/ai/ai-agents-templates/AGENTS.md.ontoHost.tpl`. They `@`-include `~/.config/ai-agents/docs/` (`comments.md`, `git.md`, `testing.md`).
 
 Project instructions live in `<repo>/.claude/` (preferred) or `<repo>/CLAUDE.md`.
 
