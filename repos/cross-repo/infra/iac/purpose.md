@@ -15,3 +15,4 @@ Repos, protections and automation identities are stateful infrastructure. Clicke
 - Least privilege: each token and service account reaches only what its flow needs.
 - State isolated at the storage boundary: a separate GCS bucket.
 - Nothing secret committed: every sensitive value lives in Secrets Manager / op, every sensitive attr is masked.
+- Published versions live one per `tf/<NAME>.auto.tfvars`, raised by automation pin MRs that never collide. Every main apply reports the variables it changed to `cross-repo/automation` as a `ci-var.changed` event, which regenerates their consumers.
