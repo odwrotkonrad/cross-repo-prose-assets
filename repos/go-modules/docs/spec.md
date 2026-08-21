@@ -62,8 +62,8 @@ base:
       - owner: root
         ownerGroup: "0"
         chmod: "0440"
-        <<<:
-          - {source: etc/sudoers.d/configs.ontoHost.tpl, dest: [/etc/sudoers.d/configs]}
+        source: etc/sudoers.d/configs.ontoHost.tpl
+        dest: [/etc/sudoers.d/configs]
     makeDirs:
       - directories:
           - $HOME/.local/{bin,share}
@@ -539,7 +539,10 @@ Cascade, outermost first, innermost wins:
   `false` overrides an inherited `true`: a group carries the common case, a
   leaf opts out.
 
-A node with nested `<<<` may not also carry a dest rewrite rule or a glob.
+A group exists to assemble paths: it carries a `source` prefix, a `dest`
+prefix, or both. A node with nested `<<<` and neither is rejected at load, as
+is one that also carries a dest rewrite rule or a glob. Perms, `ctx` or
+`options` shared by leaves that share no path go on each leaf.
 
 makeCopies groups follow the same rules, minus `ctx` and `options`.
 
