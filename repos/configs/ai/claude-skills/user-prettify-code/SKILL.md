@@ -26,10 +26,10 @@ Lang: `$lang` (empty → none). When set, apply these design principles to every
 
 Top-down, recursive:
 
-1. Look at the targets from high level: file structure, module boundaries, how pieces relate.
+1. Survey the targets from high level: file structure, module boundaries, how pieces relate.
 2. Plan: what to restructure, what to touch per file, in what order.
 3. Execute.
-4. Repeat on smaller pieces (a file, a function cluster) as needed.
+4. Repeat on smaller pieces (a file, a function cluster).
 
 ## Instructions
 

@@ -6,11 +6,10 @@ Git-tracked dotfiles extended into root OS space: every option explicit, plus sc
 
 ## Why It Exists
 
-Records a system's stateful configuration for reading and reference, not for frequent software updates. Explicit options, modifications separated from defaults, annotated choices.
+Records a system's stateful configuration for reading and reference, not for churn: explicit options, modifications separated from defaults, annotated choices.
 
 ## Goals
 
 - Every configuration option explicit: defaults marked, modifications separated.
 - One `root/` tree loads onto any supported host profile (desktop/macos, cli/macos, cli/linux).
 - Generated docs stay fresh: tools inventory, Makefile doc, repo tree, agent files, README.
-

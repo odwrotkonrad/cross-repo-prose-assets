@@ -16,7 +16,7 @@ Argument completion for files and dirs.
 
 The engine fills the context's function field, so lookups are `:completion:_deep_files:<completer>:<command>:<argument>:<group>`. `:completion:_deep_files:*` scopes a style to every wrapped command, `:completion:_deep_files:*:cd:*` to one. Most specific pattern wins. Patterns without the function field (`:completion:*:cd:*`) still match.
 
-Group names: `<scope>[-N][+M]`. `-N` anchors at the N-th ancestor of PWD, bare name = that anchor's children, `+M` adds M depth. Unknown names are skipped silently.
+Group names: `<scope>[-N][+M]`. `-N` anchors at the N-th ancestor of PWD, bare name = that anchor's children, `+M` adds M depth. Unknown names are skipped.
 
 Groups:
 

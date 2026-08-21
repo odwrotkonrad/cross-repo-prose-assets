@@ -2,11 +2,11 @@
 
 ## What It Is
 
-che's package catalog: `packages.yml` declaring every package, its install methods per manager and platform, and its verify commands, plus the `scripts/` those entries reference. Published as a versioned definitions tarball che fetches and embeds. A pytest suite proves each package installs for real, one throwaway container per (package, method).
+che's package catalog: `packages.yml` declaring every package, its install methods per manager and platform, and its verify commands, plus the `scripts/` those entries reference. Published as a versioned definitions tarball che fetches and embeds. A pytest suite installs each package for real, one throwaway container per (package, method).
 
 ## Why It Exists
 
-The catalog is data on its own release cadence. A version bump or a new package should not enter through a Go module, a `go.work` entry and a monorepo pipeline. Proving a package installs breaks for different reasons than proving an installer works, so the suites live apart: method coverage stays with che's code, package coverage lives here with the data.
+The catalog is data with its own release cadence: a version bump or a new package should not go through a Go module, a `go.work` entry and a monorepo pipeline. A package failing to install and an installer failing break for different reasons, so the suites live apart: method coverage with che's code, package coverage here with the data.
 
 ## Goals
 

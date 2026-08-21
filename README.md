@@ -7,23 +7,23 @@ Rendered prose: purpose docs, README sources, AI payloads, shared fragments, lic
 
 ### What It Is
 
-One semver-tagged repo holding the prose rendered into every workspace repo: per-repo purpose docs, README sources, AI payloads (agent rules, skills, output styles, snippets), shared fragments, the canonical license, the ontoRepo doc templates. Downstream repos assemble their own docs from these artifacts via version-pinned che renderTemplates.
+Semver-tagged home of the prose rendered into every workspace repo: per-repo purpose docs, README sources, AI payloads (agent rules, skills, output styles, snippets), shared fragments, the canonical license, the ontoRepo doc templates. Downstreams assemble their own docs from these via version-pinned che renderTemplates.
 
 ### Why It Exists
 
-Prose lived scattered: purpose docs, README prose and templates duplicated in each consumer. One home means every rendered piece is authored, versioned and released in one place, while each downstream still owns its assembly. Conventions and specs live apart, in `cross-repo/prose/spec`, so a contract edit never re-renders a README.
+Prose was duplicated per consumer: purpose docs, README text, templates. One home authors, versions and releases every piece once, each downstream still owns its assembly. Conventions and specs live apart in `cross-repo/prose/spec`, so a contract edit never re-renders a README.
 
 ### Goals
 
 - One canonical home for rendered prose: per-repo prose under `repos/<repo-path>/`, shared fragments, templates.
 - `repos/<repo-path>/` mirrors the GitLab group tree: the path under `repos/` equals the project path.
 - Every merge to main mints a semver tag, patch by default. A `semver: major|minor|patch` commit token lifts it.
-- Each release triggers `cross-repo/automation`, which propagates it to affected downstreams as regen MRs.
-- Downstream owns assembly: assets ships artifacts, consumers render their own docs at a pinned version.
+- Each release triggers `cross-repo/automation`, which fans regen MRs out to affected downstreams.
+- Downstream owns assembly: assets ships artifacts, consumers render their docs at a pinned version.
 
 ## Release
 
-Every merge to main mints the next `vX.Y.Z` tag. `ci/semver-bump.zsh` bumps the patch by default: prose grows by adding files, and an add is not a release event. A `semver: major|minor|patch` commit token lifts it. The tag pipeline triggers [automation](https://gitlab.com/konradodwrot/cross-repo/automation), which fans the release out to affected downstreams as regen MRs.
+Every merge to main mints the next `vX.Y.Z` tag, patch by default (`ci/semver-bump.zsh`): adding prose is not a release event. A `semver: major|minor|patch` commit token lifts it. The tag pipeline triggers [automation](https://gitlab.com/konradodwrot/cross-repo/automation), which fans regen MRs out to affected downstreams.
 
 Consumers pin this repo through `PROSE_ASSETS_REF` (`GRP_KO_VAR_PROSE_ASSETS_REF`). Conventions and specs live in [spec](https://gitlab.com/konradodwrot/cross-repo/prose/spec) (`PROSE_SPEC_REF`), shared CI scripts in [misc](https://gitlab.com/konradodwrot/cross-repo/misc) (`MISC_REF`).
 
@@ -31,7 +31,7 @@ Consumers pin this repo through `PROSE_ASSETS_REF` (`GRP_KO_VAR_PROSE_ASSETS_REF
 
 - `repos/<repo-path>/`: per-repo prose (`purpose.md`, `templates/3-audience/`, `readme/`, `docs/`, `ai/`), mirroring the GitLab group tree.
 - `shared/`: fragments more than one repo consumes (`license/`).
-- `templates/`: canonical ontoRepo templates downstream repos source (`2-data/`).
+- `templates/`: ontoRepo templates downstream repos source (`2-data/`).
 
 ## License
 

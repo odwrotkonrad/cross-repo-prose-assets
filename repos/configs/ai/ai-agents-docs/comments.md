@@ -5,7 +5,7 @@
 
 Wrap AI-generated code in a comment section, every file type (code, config, YAML, TOML, JSON5, Makefiles, shell, dotfiles).
 
-A mark requests human attention, it is not a record. Carefully reviewed code may carry none. The 🤖 count is how much review you want:
+A mark requests review, it is not a record: reviewed code may carry none. The 🤖 count is how much review you want:
 
 - 🤖🤖🤖 a lot more
 - 🤖🤖 some more (default, creator corrects)
@@ -43,9 +43,9 @@ TWO exceptions to the ban, both mandatory:
 1. The 🤖 marking section above, never overridden by this rule.
 2. A docstring on every exported symbol, for an audience outside the code.
 
-Exported: the public interface others call (an exported Go symbol, a published module's API, a CLI entrypoint). Internal and unexported code gets nothing.
+Exported: the public interface others call (an exported Go symbol, a published module's API, a CLI entrypoint). Internal code gets nothing.
 
-State the purpose, briefly. One line where one line does. Never restate the signature or narrate the body. Names and types carry the detail, the docstring says what the symbol is for.
+State the purpose, one line where one line does. Never restate the signature or narrate the body: names and types carry the detail.
 
 ```go
 // Render applies the template at src and writes the result to dst.

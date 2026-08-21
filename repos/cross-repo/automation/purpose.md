@@ -2,11 +2,11 @@
 
 ## What It Is
 
-Cross-repo automation hub. Receives one JSON event per CI trigger (`release.published` from a producer's tag pipeline, `ci-var.changed` from iac's main apply), owns the dependency graph aggregated from per-repo `.repo/cross-repo-interface.yml` declarations, regenerates affected downstreams as deterministic bot MRs (auto-merge on patch/minor, human review on major), and runs a local watcher that keeps non-checked-out rendered outputs fresh in local worktrees. One Ruby CLI, `bin/automation`, carries every command.
+Cross-repo automation hub, one Ruby CLI (`bin/automation`). Takes one JSON event per CI trigger (`release.published` from a producer's tag pipeline, `ci-var.changed` from iac's main apply), owns the dependency graph aggregated from per-repo `.repo/cross-repo-interface.yml` declarations, regenerates affected downstreams as deterministic bot MRs (auto-merge on patch/minor, human review on major), and runs a local watcher keeping non-checked-out rendered outputs fresh in local worktrees.
 
 ## Why It Exists
 
-Centralized prose needs an operator: something to notice a release, know who consumes it, and carry the update into every affected repo. The dependency graph used to be hand-maintained in one spec file. Now each repo declares its own interface and automation derives the graph, so the map cannot drift from the territory.
+Centralized prose needs an operator: notice a release, know who consumes it, carry the update into every affected repo. The dependency graph was hand-maintained in one spec file. Now each repo declares its interface and automation derives the graph, so the map cannot drift from the territory.
 
 ## Goals
 
