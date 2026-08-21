@@ -61,9 +61,8 @@ separately, in `configs/ci/zsh/scripts/installs/00-ci-deps.zsh`.
 
 CI builds both images on every non-draft MR (cache-only), `main`, and tag
 pipeline. `main` auto-creates the next `vX.Y.Z` release, and its tag pipeline
-publishes the pinned tag. A `main` pipeline (or a che release via
-`BUILD_ALL_IMAGES`) also triggers the `ai-sandbox` re-bake. See
-`.gitlab-ci.yml`.
+publishes the pinned tag, then sends `cross-repo/automation` a
+`release.published` event once both images are pushed. See `.gitlab-ci.yml`.
 
 ## License
 
