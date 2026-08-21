@@ -2,7 +2,7 @@
 
 ## What It Is
 
-Cross-repo automation hub. Reacts to prose releases, owns the dependency graph aggregated from per-repo `.repo/cross-repo-interface.yml` declarations, regenerates affected downstreams as deterministic bot MRs (auto-merge on patch/minor, human review on major), and runs a local watcher that keeps non-checked-out rendered outputs fresh in local worktrees.
+Cross-repo automation hub. Receives one JSON event per CI trigger (`release.published` from a producer's tag pipeline, `ci-var.changed` from iac's main apply), owns the dependency graph aggregated from per-repo `.repo/cross-repo-interface.yml` declarations, regenerates affected downstreams as deterministic bot MRs (auto-merge on patch/minor, human review on major), and runs a local watcher that keeps non-checked-out rendered outputs fresh in local worktrees. One Ruby CLI, `bin/automation`, carries every command.
 
 ## Why It Exists
 
@@ -10,7 +10,7 @@ Centralized prose needs an operator: something to notice a release, know who con
 
 ## Goals
 
-- A prose tag triggers a pipeline, which verifies affected downstreams, then fans out regen MRs.
+- A producer release pins iac, iac's apply reports the variables it moved, each moved variable regenerates its consumers at the applied value. No polling.
 - Dependency graph generated, never hand-edited: per-repo declarations merged over bootstrap seeds, inconsistency fails the build.
 - Bot MRs deterministic and safe: fixed text template, auto-merge only patch/minor on green downstream CI.
 - Local sync: the watcher re-renders only gitignored outputs, tracked files change via MRs only.
