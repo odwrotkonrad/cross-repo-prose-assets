@@ -2,7 +2,7 @@
 
 ## What It Is
 
-Shared CI scripts every workspace repo renders into its checkout: `ci/semver-bump.zsh` infers the next semver tag from the last tag's diff, `ci/tag-mint.zsh` mints and pushes it. Future shared CI templates land beside them.
+Shared CI scripts every workspace repo renders into its checkout: `ci/semver-bump.zsh` infers the next semver tag from the last tag's diff, `ci/tag-mint.zsh` mints and pushes it. Shared CI templates land beside them, included at `MISC_REF`: `ci/templates/TriggerAutomation.gitlab-ci.yml`, the one job shape that sends `cross-repo/automation` an event.
 
 ## Why It Exists
 
