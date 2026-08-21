@@ -6,8 +6,8 @@ AI agent session sandbox on a k8s cluster.
 
 ## Why It Exists
 
-Isolates claude from the host, so it can act freely without risking it.
+Isolates claude from the host: it acts freely, the host stays safe.
 
 ## Goals
 
-- AI agents isolated from the host, free to do anything safely.
+- Agents isolated from the host, free to do anything.

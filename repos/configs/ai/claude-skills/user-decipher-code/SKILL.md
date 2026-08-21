@@ -24,13 +24,13 @@ Lang: `$lang` (empty → none). When set, apply these design principles to every
 
 ## Procedure
 
-1. Read the targets whole. Understand every symbol and comment. Each clarifying comment marks a spot where the code failed to speak for itself.
+1. Read the targets whole. Understand every symbol and comment. Each clarifying comment marks where the code failed to speak for itself.
 2. Fold that understanding into the code:
-   - Rename. Each name carries what the comment had to explain: max info, `noun_noun_verb`, max 3 parts.
-   - Standard names over coined ones (`src`/`dst`, `count`, `path`, `parse`, `render`). Replace every coined term with its standard equivalent wherever it appears. One word per concept across all symbols, no synonyms.
-   - Rearrange. Top-down order: intent first, detail below, related things adjacent.
+   - Rename. Each name carries what the comment explained: max info, `noun_noun_verb`, max 3 parts.
+   - Standard names over coined ones (`src`/`dst`, `count`, `path`, `parse`, `render`), replaced everywhere the coined term appears. One word per concept, no synonyms.
+   - Rearrange. Top-down: intent first, detail below, related things adjacent.
    - Cut comments. Once a name or structure says it, delete the comment. Keep only what code cannot express.
-3. Re-read as a first-time reader. Any spot that needs a comment or a pause: rename or rearrange again.
+3. Re-read as a first-time reader. Any spot needing a comment or a pause: rename or rearrange again.
 
 Goal: every piece understood from its name and position alone.
 

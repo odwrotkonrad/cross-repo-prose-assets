@@ -11,7 +11,7 @@ arguments: [scope]
 
 Scope: `$scope`, required, one of:
 
-- `nontest`: all non-test code. Test code is read-only context: never edit, move, delete, or rename a test file, fixture, or spec. If a redesign breaks tests, change the production design, then report which tests block it.
+- `nontest`: all non-test code. Test code is read-only context: never edit, move, delete, or rename a test file, fixture, or spec. A redesign that breaks tests changes the production design, then reports which tests block it.
 - `test`: all test code (test files, fixtures, specs, harnesses). Non-test code is read-only context: never edit production code, not one line, not to "unblock" a test redesign. Report blockers.
 
 Any other value, or empty: stop and ask.
@@ -27,12 +27,12 @@ Assume a junior wrote every line in scope. Trust nothing:
 
 ## Procedure
 
-1. Survey: map the pieces in scope, how they connect, who calls what, where state lives, where duplication and dead weight sit.
-2. Judge: list what is over-built, under-built, misplaced, duplicated, or dead. Rank by payoff.
+1. Survey: the pieces in scope, how they connect, who calls what, where state lives, where duplication and dead weight sit.
+2. Judge: what is over-built, under-built, misplaced, duplicated, or dead. Rank by payoff.
 3. Decide the target design: how the codebase should look, not how to patch it.
-4. Plan the moves from current to target, ordered so build and tests stay green between steps.
+4. Plan the moves from current to target, build and tests green between steps.
 5. Execute. Delete and rewrite over decorate.
-6. Re-survey the result. Repeat until another pass would neither shrink nor clarify the code.
+6. Re-survey. Repeat until another pass would neither shrink nor clarify the code.
 
 ## Instructions
 
