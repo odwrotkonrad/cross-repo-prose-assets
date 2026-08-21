@@ -12,10 +12,18 @@ Each repo declares its own surface in `.repo/cross-repo-interface.yml`: `upstrea
 
 `workspace/` is the che profile assembling the local workspace (moved here from configs' `gitlab/projects`): `scripts/10-clone.zsh` clones/syncs every project of each `$GITLAB_GROUPS` group into `$WORKSPACE_DIR`, `scripts/20-index.zsh` generates each subgroup's repo-index and rendered `AGENTS.md`/`CLAUDE.md` (all non-checked-out outputs), `tree/` carries the parent Makefiles and the VS Code workspace file linked onto the host. Profile names stay `gitlab/projects` / `gitlab/projects-parent-links` so host wiring repoints without renames.
 
+## Events
+
+Every sender reaches this repo through `cross-repo/misc`'s `TriggerAutomation` CI template, forwarding one JSON `AUTOMATION_EVENT` (`type`, `source`, `details`). `dispatch-event` runs `bin/automation dispatch`, a Ruby dispatcher picking a handler by `type` and emitting the regen child pipeline (`lib/automation/`, minitest under `test/`, `make test`):
+
+- `release.published` (`details: producer, artifact, tag`): one pin regen against `cross-repo/infra/iac`, raising the producer's tfvars line.
+- `ci-var.changed` (`details: variables: [{key, from, to}]`, sent by iac's main apply): one content regen per consumer of each changed `GRP_KO_VAR_*` variable's producer, rendered at the new value.
+
+An unknown `type` fails the dispatch. `bin/automation graph affected|produces|consumes <vertex>` answers the graph queries.
+
 ## Scripts
 
 - `scripts/aggregate/`: build `deps/deps-graph.yml` from interfaces (`--local <workspace>` offline, `--check` drift gate).
-- `scripts/verify/`: queries over the graph (`--produces <repo>`, `--consumes <repo>`, `--affected <vertex>`), plus `--emit-pipeline` writing the regen child pipeline for a `RELEASE_TAG` of a `PRODUCER`.
 - `scripts/regen/`: per-downstream regen: bump the producer's pin, `make render-templates`, branch, MR, auto-merge when the bump is at most minor. `--dry-run --workdir <checkout>` prints the plan.
 - `scripts/watcher/`: local poller refreshing only non-checked-out (gitignored) rendered outputs per worktree. Tracked files change via the MR flow only.
 
