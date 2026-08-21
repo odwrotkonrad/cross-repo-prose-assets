@@ -6,7 +6,7 @@ Cross-repo automation: prose propagation, dependency graph, regen MRs, local syn
 
 ## Dependency graph
 
-Each repo declares its own surface in `.repo/cross-repo-interface.yml`: `upstream:` consumed `<repo>/<artifact>` vertices (repo-level consumption: pipeline, worktree), `edges:` a map of upstream vertex to the list of this repo's artifacts it lands in (`go-modules/lib: [che]`), then `downstream:` produced artifacts (`name` + `type`). `scripts/aggregate/aggregate.zsh` fetches every declaration (raw GitLab API, no clones), merges them over `deps/seed-interfaces.yml` (bootstrap entries for repos not declaring yet), and renders `deps/deps-graph.yml`: generated, committed for readability, drift-checked in CI, never hand-edited. A consumed artifact nobody produces, or an edge into an artifact the repo does not produce, fails aggregation.
+Each repo declares its own surface in `.repo/cross-repo-interface.yml`: `upstream:` consumed `<repo>/<artifact>` vertices (repo-level consumption: pipeline, worktree), `edges:` a map of upstream vertex to the list of this repo's artifacts it lands in (`go-modules/lib: [che]`), then `downstream:` produced artifacts (`name` + `type`). `bin/automation aggregate` fetches every declaration (raw GitLab API, no clones), merges them over `deps/seed-interfaces.yml` (bootstrap entries for repos not declaring yet), and renders `deps/deps-graph.yml`: generated, committed for readability, drift-checked in CI, never hand-edited. A consumed artifact nobody produces, or an edge into an artifact the repo does not produce, fails aggregation.
 
 ## Workspace assembly
 
@@ -21,11 +21,16 @@ Every sender reaches this repo through `cross-repo/misc`'s `TriggerAutomation` C
 
 An unknown `type` fails the dispatch. `bin/automation graph affected|produces|consumes <vertex>` answers the graph queries.
 
-## Scripts
+## CLI
 
-- `scripts/aggregate/`: build `deps/deps-graph.yml` from interfaces (`--local <workspace>` offline, `--check` drift gate).
-- `scripts/regen/`: per-downstream regen: bump the producer's pin, `make render-templates`, branch, MR, auto-merge when the bump is at most minor. `--dry-run --workdir <checkout>` prints the plan.
-- `scripts/watcher/`: local poller refreshing only non-checked-out (gitignored) rendered outputs per worktree. Tracked files change via the MR flow only.
+`bin/automation`, Ruby stdlib only, pure planning in `lib/automation/` covered by `make test`, IO in the runners:
+
+- `aggregate [--local <workspace>] [--out <yml>] [--check]`: build `deps/deps-graph.yml` from interfaces (offline from a workspace, `--check` drift gate).
+- `regen --repo <repo> --tag <tag> --producer <name> [--prev <tag>] [--workdir <dir>] [--dry-run]`: per-downstream regen: move the producer's pin, `make render-templates`, branch, MR, auto-merge when the bump is at most minor. `--dry-run --workdir <checkout>` prints the plan.
+- `sweep [--dry-run]`: land `[automation]` MRs that missed their auto-merge window (arm running, merge green, leave red).
+- `dispatch`, `graph`: see Events.
+
+`scripts/watcher/`: local poller refreshing only non-checked-out (gitignored) rendered outputs per worktree. Tracked files change via the MR flow only.
 
 ## License
 
