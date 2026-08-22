@@ -4,8 +4,6 @@ Dotfiles extended into root OS space, loaded onto the host from one root/ tree b
 
 @assets/docs-agents/purpose.md
 
-@assets/data/conventions.md
-
 This repo's behavior specs live in the spec repo (`cross-repo/prose/spec`): `repos/configs/spec/` (`.story.md` user stories by default, `.scenarios.md` Gherkin only for automation-bound behavior, status in each title, vetting dirs apply, edit specs before implementation).
 
 @assets/docs-agents/file-naming.md

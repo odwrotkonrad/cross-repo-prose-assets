@@ -4,7 +4,6 @@ upstream:
   - cross-repo/infra/oci-images/ci-linux
   - cross-repo/infra/iac/ci-var/artifact-registry
   - cross-repo/infra/iac/ci-var/ci-images-ref
-  - cross-repo/prose/spec/conventions-doc
   - cross-repo/misc/ci-scripts
 downstream:
   - {name: repo-prose, type: ai-prose}

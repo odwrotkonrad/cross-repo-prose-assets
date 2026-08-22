@@ -4,8 +4,6 @@ Cross-repo automation: prose propagation, dependency graph, regen MRs, local syn
 
 @assets/docs-agents/purpose.md
 
-@assets/data/conventions.md
-
 @assets/data/makefile.agents.md
 
 ## Directory Tree
