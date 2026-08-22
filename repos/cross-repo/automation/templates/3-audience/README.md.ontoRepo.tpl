@@ -32,7 +32,7 @@ An unknown `type` fails the dispatch. `bin/automation graph affected|produces|co
 - `sweep [--dry-run]`: land `[automation]` MRs that missed their auto-merge window (arm running, merge green, leave red).
 - `dispatch`, `graph`: see Events.
 
-`scripts/watcher/`: local poller refreshing only non-checked-out (gitignored) rendered outputs per worktree. Tracked files change via the MR flow only.
+Tracked files change via the MR flow only. A local checkout refreshes its gitignored outputs with `make repo-render-env`, which reads each pin from its group variable.
 
 ## License
 
