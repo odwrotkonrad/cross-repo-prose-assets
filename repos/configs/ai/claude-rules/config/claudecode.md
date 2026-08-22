@@ -67,7 +67,7 @@ root/_home/.config/claude/:
     marketplaces/:
 ```
 
-Global instructions (`~/.config/claude/CLAUDE.md`) sit outside this tree, rendered by the llm/base profile from prose/assets `repos/configs/ai/ai-agents-templates/AGENTS.md.ontoHost.tpl`. They are assembled from three `@`-includes of `~/.config/ai-agents/docs/`: `system.md` (tools, configs, git workflow), `code.md` (code rules, comments, tests), `prose.md` (prose style, agent instructions).
+Global instructions (`~/.config/claude/CLAUDE.md`) sit outside this tree, rendered by the llm/base profile from prose/assets `repos/configs/ai/ai-agents-templates/AGENTS.md.ontoHost.tpl`. They are assembled from four `@`-includes of `~/.config/ai-agents/docs/`: `system.md` (tools, configs, git workflow), `code.md` (code rules, tests), `comments.md` (🤖 marks, no-comments rule, docstrings), `prose.md` (prose style, agent instructions).
 
 Project instructions live in `<repo>/.claude/` (preferred) or `<repo>/CLAUDE.md`.
 
