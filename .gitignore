@@ -5,7 +5,8 @@
 /assets/data/makefile.agents.md
 /assets/data/repo-structure.md
 /assets/docs-agents/purpose.md
-/ci/semver-bump.zsh
-/ci/tag-mint.zsh
+#[why] shared render + tagging payload: authored in cross-repo/misc, rendered here, never tracked
+#[why] scoped to shared/ci/, not all of shared/: this repo authors shared/license/ as tracked source
+/shared/ci/
 /.env
 ##[<] 🤖

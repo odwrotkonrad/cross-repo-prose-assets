@@ -35,6 +35,8 @@ Read docs via:
 
 Git goes through the `/user-git-ops` skill. Never hand-derive branch names, commit messages, or MR text. The skill maps the request to one op and launches a detached wrapper (git logic and LLM text live there, logs in `~/.local/state/git-wrappers/`).
 
+Never stash. No `$ git stash` in any form, no stash in a script you write. A stash hides the user's work where they will not look for it, and it breaks parallel work. A dirty tree is normal: commit it, work around it, or hand it back.
+
 - branch / rename / name: `$ git-branch-name-upsert.zsh &`
 - commit (append `amend`): `$ git-commit-upsert.zsh [amend] &`
 - mr / pr: `$ git-mr-upsert.zsh &`
