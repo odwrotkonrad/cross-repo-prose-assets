@@ -6,7 +6,7 @@ Conventions and behavior specs every workspace repo obeys.
 
 ## Release
 
-Every merge to main mints the next `vX.Y.Z` tag, patch by default, lifted by a `semver: major|minor|patch` commit token. The tag pipeline triggers [automation](https://gitlab.com/konradodwrot/cross-repo/automation), which re-renders `conventions/conventions.md` into affected repos as regen MRs. Consumers pin this repo through `PROSE_SPEC_REF` (`GRP_KO_VAR_PROSE_SPEC_REF`).
+Every merge to main mints the next `vX.Y.Z` tag, patch by default, lifted by a `semver: major|minor|patch` commit token. The tag pipeline triggers [automation](https://gitlab.com/konradodwrot/cross-repo/automation), which bumps the pin in [configs](https://gitlab.com/konradodwrot/configs) as a regen MR. Nothing here renders into a repo: specs are read in place, and `configs` `llm/base` renders `conventions/conventions.md` once onto the host, at `PROSE_SPEC_REF` (`GRP_KO_VAR_PROSE_SPEC_REF`).
 
 Rendered prose (purpose docs, templates, AI payloads, license) lives in [assets](https://gitlab.com/konradodwrot/cross-repo/prose/assets), shared CI scripts in [misc](https://gitlab.com/konradodwrot/cross-repo/misc).
 

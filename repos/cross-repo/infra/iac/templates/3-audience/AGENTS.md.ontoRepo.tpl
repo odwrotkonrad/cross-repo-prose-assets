@@ -4,8 +4,6 @@ The `konradodwrot` group tree and the identities it holds, as Terraform.
 
 @assets/docs-agents/purpose.md
 
-@assets/data/conventions.md
-
 ## Specs Before Implementation
 
 This repo's behavior specs live in the spec repo (`cross-repo/prose/spec`): `repos/cross-repo/infra/iac/spec/`. Two forms sharing a stem: `<feature>.story.md`
