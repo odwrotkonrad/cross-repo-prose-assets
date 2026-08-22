@@ -13,7 +13,7 @@ them in the subject or description.
 
 ## Style
 
-{{ renderMarkdown "~/.config/claude/rules/docs/prose.md" "remove-frontmatter" "strip-comments" "normalize-headings" }}
+{{ renderMarkdown "~/.config/ai-agents/docs/prose.md" "remove-frontmatter" "strip-comments" "normalize-headings" }}
 
 ## Task
 

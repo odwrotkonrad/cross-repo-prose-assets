@@ -43,7 +43,6 @@ root/_home/.config/claude/:
   themes/:
   rules/:
     code/:
-      code.md:
       go/:
         principles.md:
       python/:
@@ -62,15 +61,13 @@ root/_home/.config/claude/:
       zsh/:
         functions.md:
         zsh.md:
-    docs/:
-      prose.md:
   plugins/:
     installed_plugins.json:
     known_marketplaces.json:
     marketplaces/:
 ```
 
-Global instructions (`~/.config/claude/CLAUDE.md`) sit outside this tree, rendered by the llm/base profile from prose/assets `repos/configs/ai/ai-agents-templates/AGENTS.md.ontoHost.tpl`. They `@`-include `~/.config/ai-agents/docs/` (`comments.md`, `git.md`, `testing.md`).
+Global instructions (`~/.config/claude/CLAUDE.md`) sit outside this tree, rendered by the llm/base profile from prose/assets `repos/configs/ai/ai-agents-templates/AGENTS.md.ontoHost.tpl`. They are assembled from three `@`-includes of `~/.config/ai-agents/docs/`: `system.md` (tools, configs, git workflow), `code.md` (code rules, comments, tests), `prose.md` (prose style, agent instructions).
 
 Project instructions live in `<repo>/.claude/` (preferred) or `<repo>/CLAUDE.md`.
 

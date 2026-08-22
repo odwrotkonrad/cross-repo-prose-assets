@@ -1,9 +1,4 @@
----
-paths:
-  - "**/*.md"
-  - "**/*.txt"
-  - "**/*.md.tpl"
----
+# Prose
 
 ## Prose Style
 
