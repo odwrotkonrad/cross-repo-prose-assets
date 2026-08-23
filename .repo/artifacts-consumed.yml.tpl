@@ -1,0 +1,12 @@
+##[>] 🤖
+consumes:
+  - uri: gitlab.com/konradodwrot/ai-harness/configs
+    type: gitRepository
+    version: {{ env.Getenv "AI_CONFIGS_REF" }}
+  - uri: gitlab.com/konradodwrot/cross-repo/misc
+    type: gitRepository
+    version: {{ env.Getenv "MISC_REF" }}
+  - uri: us-central1-docker.pkg.dev/staging-499418/ci/ci-linux
+    type: ociImage
+    version: {{ env.Getenv "OCI_IMAGES_CI_LINUX_REF" }}
+##[<] 🤖

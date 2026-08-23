@@ -1,4 +1,4 @@
-# ai-sandbox
+# sandbox
 
 Local claude session sandbox.
 
