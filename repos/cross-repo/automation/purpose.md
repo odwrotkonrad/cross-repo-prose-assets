@@ -2,16 +2,17 @@
 
 ## What It Is
 
-Cross-repo automation hub, one Ruby CLI (`bin/automation`). Takes one JSON event per CI trigger (`release.published` from a producer's tag pipeline, `ci-var.changed` from iac's main apply), owns the dependency graph aggregated from per-repo `.repo/cross-repo-interface.yml` declarations, and regenerates affected downstreams as deterministic bot MRs (auto-merge on patch/minor, human review on major).
+Cross-repo automation hub, one Ruby CLI (`bin/automation`). Takes a JSON array of events per CI trigger (`artifact.released`, `ci-variable.updated`, `artifacts.declared|consumed|produced`), aggregates every repo's `.repo/` declarations into the three system graphs it writes to `cross-repo/graph`, generates `cross-repo/infra/ci-variables`' tfvars, and regenerates affected downstreams as deterministic bot MRs (auto-merge on patch/minor, human review on major).
 
 ## Why It Exists
 
-Centralized prose needs an operator: notice a release, know who consumes it, carry the update into every affected repo. The dependency graph was hand-maintained in one spec file. Now each repo declares its interface and automation derives the graph, so the map cannot drift from the territory.
+Centralized prose needs an operator: notice a release, know who consumes it, carry the update into every affected repo. The graph was hand-maintained, then hand-shaped; now every artifact and edge comes from the repos' own declarations, so the map cannot drift from the territory. The graph lives in its own repo because its commit log is the history of the system, unreadable if mixed with this code.
 
 ## Goals
 
-- A producer release pins iac, iac's apply reports the variables it moved, each moved variable regenerates its consumers at the applied value. No polling.
-- Dependency graph generated, never hand-edited: per-repo declarations merged over bootstrap seeds, inconsistency fails the build.
+- A producer release raises its variables, each moved variable regenerates its consumers at the applied value. No polling.
+- Propagation scoped by `depends_on`: an upstream rebuilds exactly the artifacts declaring it, and one nothing is built from is recorded and nothing more.
+- Graph generated, never hand-edited: delete all three files and one aggregation pass restores them byte-identically.
+- Publishing a version cannot retrigger a release: `artifacts.produced` records and fans out nothing.
 - Bot MRs deterministic and safe: fixed text template, auto-merge only patch/minor on green downstream CI.
-- Local checkouts refresh on demand: `make repo-render-env` reads the group variable directly, no local poller.
 - Workspace assembly lives here: the `workspace/` che profile clones the group tree, links parent Makefiles and the VS Code workspace file, generates the non-checked-out repo indexes.
