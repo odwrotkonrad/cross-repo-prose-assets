@@ -6,11 +6,11 @@ Every non-secret CI variable in the `konradodwrot` group, as Terraform behind Te
 
 ## Why It Exists
 
-Version refs move on every release; identities and secrets almost never do. Sharing one apply meant a routine version bump replanned the tokens and SA keys, so they split: secrets stay in `cross-repo/infra/iac`, versions live here. Per-consumer project variables are what let one repo sit deliberately behind latest, which is exactly what the current-vs-desired graph pair measures.
+Version refs move on every release; identities and secrets almost never do. Sharing one apply meant a routine version bump replanned the tokens and SA keys, so they split: secrets and identities live in `cross-repo/infra/base`, applied locally by an admin, versions live here, applied by CI. Per-consumer project variables are what let one repo sit deliberately behind latest, which is exactly what the current-vs-desired graph pair measures.
 
 ## Goals
 
-- Every non-secret CI variable, and nothing secret: tokens, SA keys and identities stay in iac.
+- Every non-secret CI variable, and nothing secret: tokens, SA keys and identities stay in `base`.
 - Two scopes, two owners: the producer sets the group value, each consumer holds its own project value, which wins by GitLab precedence.
 - Both modules declare every known variable as an optional input, so a tfvars naming an unknown variable fails at plan instead of silently creating one nothing reads.
 - Generated tfvars, never hand-written: automation holds the aggregated graph, so it is the one component that knows each consumer's version.
