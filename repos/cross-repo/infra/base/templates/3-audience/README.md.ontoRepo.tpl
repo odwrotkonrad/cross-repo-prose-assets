@@ -68,11 +68,35 @@ with your admin identity:
 ```sh
 gcloud storage buckets create gs://konradodwrot-base-tfstate \
   --project=main-493613 --location=EU --uniform-bucket-level-access
+gcloud storage buckets update gs://konradodwrot-base-tfstate --versioning
 ```
+
+Both commands, not just the first: `tf/tfstate-buckets/` sets versioning on
+every bucket it creates, and this one is made by hand, so it has to be turned on
+by hand too. Without it the state holding every identity in the group is the one
+state with no previous generation to recover.
 
 Every other state bucket is created by `tf/tfstate-buckets/`.
 `konradodwrot-ci-variables-tfstate` predates this repo and is adopted with an
 `import` block rather than created.
+
+## The GitHub org deploy-key policy
+
+Push mirrors authenticate with a deploy key per repository, which an
+organization can forbid outright. `tf/org/github-org-policy.tf` sets that
+policy through a `null_resource` running `gh`, rather than a provider resource:
+`github_organization_settings` does not expose the field, and adopting it to
+reach one setting would put 26 others under terraform at their provider
+defaults, rewriting settings nobody asked it to manage.
+
+The provisioner reads the live value first and writes only when it differs, so
+a re-apply is a no-op rather than a pointless PATCH, and it re-reads afterwards
+so an API that accepts a field it ignores fails loudly.
+
+The setting is org-wide: GitHub offers no per-repository override. It permits a
+deploy key on every repository in the org, still narrower than what it
+replaces, a personal access token embedded in each mirror url and able to reach
+everything that token can.
 
 Each bucket carries two bindings, matching its repo's identity pair:
 

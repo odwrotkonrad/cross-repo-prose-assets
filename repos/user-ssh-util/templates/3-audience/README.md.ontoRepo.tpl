@@ -43,6 +43,15 @@ user-ssh-util sync --force-rotate-keys=id_signing,id_access
 
 The superseded key is revoked from every platform holding it, and so is a key you delete from config. That happens only after the replacement is published and proven to authenticate. To keep an old grant instead, name the platforms that may be touched with `--revoke-platforms=gitlab`, or opt out entirely with `revokePlatforms: []` in config.
 
+Prove the declared keys still work, without changing anything:
+
+```bash
+user-ssh-util check
+user-ssh-util check id_signing
+```
+
+An access key is proven by logging in to each platform it publishes to, a signing key by signing and verifying a payload: GitHub refuses SSH login to a signing key by design, so a login check would fail a healthy one. Exits non-zero if any check fails.
+
 Platform calls shell out to `glab` and `gh`, so authenticate those first. A revoked key loses every platform grant, and its keypair moves out of `~/.ssh` into `backups/` rather than being deleted: a signing key also loses its `allowed_signers` line. Nothing is ever destroyed, so an unwanted revoke is undone by moving the keypair back.
 
 All targets: [assets/data/makefile.agents.md](assets/data/makefile.agents.md).
