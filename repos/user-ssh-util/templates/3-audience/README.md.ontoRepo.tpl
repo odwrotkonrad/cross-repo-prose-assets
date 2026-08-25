@@ -52,7 +52,7 @@ user-ssh-util check id_signing
 
 An access key is proven by logging in to each platform it publishes to, a signing key by signing and verifying a payload: GitHub refuses SSH login to a signing key by design, so a login check would fail a healthy one. Exits non-zero if any check fails.
 
-Platform calls shell out to `glab` and `gh`, so authenticate those first. A revoked key loses every platform grant, and its keypair moves out of `~/.ssh` into `backups/` rather than being deleted: a signing key also loses its `allowed_signers` line. Nothing is ever destroyed, so an unwanted revoke is undone by moving the keypair back.
+Platform calls shell out to `glab` and `gh`, so authenticate those first. A revoked key loses every platform grant, and its keypair moves out of `~/.ssh` into `backups/` rather than being deleted. A signing key keeps its `allowed_signers` line: entries are appended stamped `valid-after="YYYYMMDD"` and never removed, so commits the key already signed keep verifying. Nothing is ever destroyed, so an unwanted revoke is undone by moving the keypair back.
 
 All targets: [assets/data/makefile.agents.md](assets/data/makefile.agents.md).
 
