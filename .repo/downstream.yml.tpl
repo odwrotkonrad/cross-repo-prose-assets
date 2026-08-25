@@ -1,5 +1,5 @@
 ##[>] 🤖
-produces:
+downstream:
   - uri: gitlab.com/konradodwrot/cross-repo/prose/assets
     type: gitRepository
     versionEnvVar: PROSE_ASSETS_REF
