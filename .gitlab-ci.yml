@@ -33,6 +33,9 @@ variables:
   CHE_SCHEMA_REF: $GRP_KO_VAR_CHE_SCHEMA_REF
   PROSE_ASSETS_REF: $GRP_KO_VAR_PROSE_ASSETS_REF
   MISC_REF: $GRP_KO_VAR_MISC_REF
+  #[why] nothing here reads it, misc's ontoRepo profile does: che parses every profile in a
+  #   remote spec at init, so including misc needs PROSE_SPEC_REF resolvable
+  PROSE_SPEC_REF: $GRP_KO_VAR_PROSE_SPEC_REF
   AI_CONFIGS_REF: $GRP_KO_VAR_AI_CONFIGS_REF
   CI_IMAGE: $ARTIFACT_REGISTRY/ci-linux:$OCI_IMAGES_CI_LINUX_REF
 
