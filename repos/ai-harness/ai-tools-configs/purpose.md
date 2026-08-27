@@ -6,7 +6,7 @@ The AI toolchain as che profiles: claude, codex, ollama, the shared agent prose 
 
 ## Why It Exists
 
-The AI harness released on the dotfiles cadence: an agent prose edit shipped the whole `configs` repo, and a shell or observability edit shipped the AI payload every repo pins. Apart, each moves on its own, behind its own pin `AI_CONFIGS_REF`.
+The AI harness released on the dotfiles cadence: an agent prose edit shipped the whole `configs` repo, and a shell or observability edit shipped the AI payload every repo pins. Apart, each moves on its own, behind its own pin `AI_TOOLS_CONFIGS_REF`.
 
 ## Goals
 
