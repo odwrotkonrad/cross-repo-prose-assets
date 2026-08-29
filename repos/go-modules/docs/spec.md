@@ -190,8 +190,9 @@ Spec-wide defaults and che knobs:
 
 - `runIf` (string list): gates every profile of this spec (profile runIf
   grammar).
-- `autoDiscover` (bool), `logLevel` (`error`|`warn`|`info`|`debug`|`trace`):
-  defaults for profiles that don't set them.
+- `autoDiscover` (bool, unset: `true`), `logLevel`
+  (`error`|`warn`|`info`|`debug`|`trace`): defaults for profiles that don't set
+  them.
 - `profileWorkingDirectory` (path): load-ops source tree, default `.` (the checkout).
   Absolute, `~/`, `$VAR` expand. Relative resolves under the checkout.
   makeLinks/makeCopies globs and renderTemplates host sources resolve against
@@ -378,8 +379,8 @@ eligible profile's full op sequence, profile by profile.
 ### options
 
 - `autoDiscover` (bool): run on bare `$ che`. Unset: inherit spec
-  `options.autoDiscover`, then `false` (runs only via `--profiles` or
-  `include.profiles`).
+  `options.autoDiscover`, then `true`. `false`: runs only via `--profiles` or
+  `include.profiles`.
 - `runIf` (string list): predicates, all must pass. `<source>` (truthy:
   builtin iff `true`, env iff set non-empty, cmd iff exit 0) or
   `<source> == <literal>` (string compare). Sources: `builtin:isOs`
