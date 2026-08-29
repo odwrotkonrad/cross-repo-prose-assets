@@ -2,7 +2,7 @@
 
 ## What It Is
 
-Two CI base images for the `konradodwrot` repos, each a multi-arch buildx manifest (amd64 native, arm64 qemu-emulated) in this project's container registry. `ci-linux`: `debian:bookworm-slim` plus the shared CI toolchain (go, che, lefthook, yq, zsh, ruby, clang, make, git, zig, goreleaser, golangci-lint, terraform, glab, op). `ci-linux-dind`: ci-linux plus the static docker CLI for docker-in-docker jobs. A che release (go-modules main) rebuilds here. Each release here fires an event to `cross-repo/automation`, which raises `CI_IMAGES_REF` in iac.
+Two CI base images for the `konradodwrot` repos, each a multi-arch buildx manifest (amd64 native, arm64 qemu-emulated) in this project's container registry. `ci-linux`: `debian:bookworm-slim` plus the shared CI toolchain (go, che, lefthook, yq, zsh, ruby, clang, make, git, zig, goreleaser, golangci-lint, terraform, glab, op). `ci-linux-dind`: ci-linux plus the static docker CLI for docker-in-docker jobs. A che release (go-modules main) rebuilds here. Each release here fires an event to `cross-repo/automation`, which raises `OCI_IMAGES_CI_LINUX_REF` and `OCI_IMAGES_CI_LINUX_DIND_REF` in iac.
 
 ## Why It Exists
 
