@@ -4,8 +4,6 @@ ontoRepo:
   options:
     autoDiscover: true
   include:
-    profiles:
-      - bootstrapCrossRepoCI
     renderTemplates:
       - source: repos/cross-repo/prose/assets/purpose.md
         options:
@@ -32,29 +30,4 @@ ontoRepo:
               - path: AGENTS.md
                 options:
                   renderReferencedFiles: true
-
-bootstrapCrossRepoCI:
-  include:
-    profiles:
-      - source: "git::https://gitlab.com/konradodwrot/cross-repo/misc@${{ env.MISC_REF }}//che.yml::bootstrapCrossRepoCITagging"
-
-claude-agents:
-  options:
-    autoDiscover: true
-    runIf:
-      - builtin:isVirt
-  include:
-    profiles:
-      - source: "git::https://gitlab.com/konradodwrot/ai-harness/ai-tools-configs@${{ env.AI_TOOLS_CONFIGS_REF }}//profiles/claude/che.yml::claude/virt"
-        ctx:
-          repo: ProseAssets
-
-envSeed:
-  include:
-    renderTemplates:
-      - source: .env.tpl
-        dest:
-          - path: .env
-            options:
-              writeType: mergeUpsert
 ##[<] 🤖🤖
