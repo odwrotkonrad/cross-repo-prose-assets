@@ -169,6 +169,9 @@ cli/linux:
 ontoRepo:
   options: {autoDiscover: true}
   include:
+    makeCopies:
+      - source: "git::gitlab.com/konradodwrot/cross-repo/prose/assets@${{ "{{" }} var.PROSE_ASSETS_REF }}//shared/license/LICENSE"
+        dest: LICENSE
     renderTemplates:
       - source: templates/local.env.ontoRepo.tpl
         dest:
@@ -609,16 +612,33 @@ source file to each listed host path.
 
 ### makeCopies
 
-A tree of sources copied onto the host byte-for-byte, never rendered: a
-gomplate-bearing file lands intact. Same node shape as renderTemplates, minus
-`variables` and `options`: a leaf (glob string, or `{source, dest}`) or a group (a
-node with nested `<<<`, its `source` and `dest` prefixes and perms cascading
-onto every descendant, innermost wins).
+A tree of sources copied byte-for-byte, never rendered: a gomplate-bearing
+file lands intact. Same node shape as renderTemplates, minus `variables` and
+`options`: a leaf (glob string, or `{source, dest}`) or a group (a node with
+nested `<<<`, its `source` and `dest` prefixes and perms cascading onto every
+descendant, innermost wins).
 
-Local sources are `*.ontoHost.cp` files, profileWorkingDirectory-relative. A
-source may be remote, `git::<repo>[@<ref>]//<path>`, explicit dest required; a
-group prefix carrying the ref concatenates with each leaf path so the pin is
-typed once. Remote globs and remote dest rewrites are rejected at load.
+An explicit dest picks the target the way a template dest does: relative
+lands on the invoking spec's git root (a sub-spec under `.che/` copies onto
+the repo, not into its own dir), `~/` or absolute lands on the host. A derived
+dest (glob source) is always host.
+
+Local sources are profileWorkingDirectory-relative: any file in a
+`{source, dest}` leaf, `*.ontoHost.cp` for globs. A source may be remote,
+`git::<repo>[@<ref>]//<path>`, explicit dest required; a group prefix carrying
+the ref concatenates with each leaf path so the pin is typed once. Remote
+globs and remote dest rewrites are rejected at load.
+
+A file that must stay verbatim, the MIT `LICENSE` say, is a copy, not a
+render:
+
+```yaml
+ontoRepo:
+  include:
+    makeCopies:
+      - source: "git::gitlab.com/konradodwrot/cross-repo/prose/assets@${{ "{{" }} var.PROSE_ASSETS_REF }}//shared/license/LICENSE"
+        dest: LICENSE
+```
 
 ```yaml
 makeCopies:
@@ -637,7 +657,7 @@ makeCopies:
 ```
 
 Leaves: glob string (derived dest, `.ontoHost.cp` stripped),
-`{source, dest: [paths]}` (one source, explicit host dests), or
+`{source, dest: [paths]}` (one source, explicit repo or host dests), or
 `{source, dest: <rule>}` (glob source + sed-style dest rewrite, `.ontoHost.cp`
 stripped first). Perms sit on the leaf itself, or on a group when several
 leaves share them. A group `dest` is one path, prefixed onto each nested
@@ -771,7 +791,9 @@ both. A node with nested `<<<` and neither is rejected at load, as is one
 carrying a dest rewrite rule or a glob. Perms, `variables` or `options` shared
 by leaves that share no path go on each leaf.
 
-makeCopies groups follow the same rules, minus `variables` and `options`.
+makeCopies groups follow the same rules, minus `variables` and `options`:
+a group `dest` prefix joins onto each nested relative dest, and the joined
+path lands on the repo or the host by the same rule as a leaf dest.
 
 ### makeDirs
 
