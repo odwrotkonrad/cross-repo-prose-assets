@@ -706,12 +706,20 @@ Dest is a path string, list of paths, or `{path, options}`:
 
 - `writeType`: `""` (overwrite, the default, autogen header plus body) |
   `mergeUpsert` (env `KEY=VALUE` union under existing dest, no header) |
-  `partial` (section injection, no header). Under `mergeUpsert` a `shell`
-  value overwrites its existing key and a plain value keeps it;
-  `| alwaysUpdate` and `| keepIfExisting` after any expression decide per
-  line, and piping a whole multi-line block through one marks every
-  `KEY=VALUE` line in it, so `{{ "{{" }} localFile ".repo/upstream.env" |
-  alwaysUpdate }}` pulls a whole lockfile in under one marker.
+  `partial` (section injection, no header). Under `mergeUpsert` a missing
+  key is written and an existing key kept, unless `mergeUpdate` or a mark
+  says otherwise: `| alwaysUpdate` overwrites, `| keepIfExisting` keeps,
+  `| dependency` tags the key for `mergeUpdate: dependencies`. A `shell`
+  value is deferred: its command runs only when the key is written. Piping
+  a whole multi-line block through one mark marks every `KEY=VALUE` line in
+  it, so `{{ "{{" }} localFile ".repo/upstream.env" | dependency }}` pulls a
+  whole lockfile in under one marker.
+- `mergeUpdate` (`mergeUpsert` only): which existing keys the render
+  overwrites. `none` (default): missing keys only. `dependencies`: plus
+  `| dependency` keys. `shell`: plus shell-valued keys, their commands
+  re-run. `all`: every template key, dest-only keys kept. `alwaysUpdate` and
+  `keepIfExisting` win in every mode. `che render-templates --merge-update
+  <mode>` (`CHE_RENDER_TEMPLATES_MERGE_UPDATE`) overrides every dest.
 - `commentPrefix` (string): the line-comment prefix section markers sit
   behind (`#`, `//`, `--`, `<!--`). Required with `partial`, rejected with any
   other `writeType`.
